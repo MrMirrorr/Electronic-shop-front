@@ -49,6 +49,7 @@ export const Search = styled(SearchContainer)`
 		width: 100%;
 		height: 40px;
 		padding: 0 50px 0 15px;
+		color: #fff;
 		border: 0;
 		border-radius: 3px;
 		background-color: #999999;

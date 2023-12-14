@@ -24,8 +24,8 @@ const ControlPanelContainer = ({ className }) => {
 		return () => document.body.removeEventListener('click', handleOutsideClick);
 	}, [visiblePopup]);
 
-	const isAuth = true;
-	const isAdmin = true;
+	const isAuth = false;
+	const isAdmin = false;
 
 	return isAuth ? (
 		<div className={className}>
@@ -58,6 +58,8 @@ const ControlPanelContainer = ({ className }) => {
 		</div>
 	) : (
 		<Button
+			variant="link"
+			to="/registration"
 			width="150px"
 			height="35px"
 			color="#525864"
@@ -65,7 +67,7 @@ const ControlPanelContainer = ({ className }) => {
 			radius="20px"
 			uppercase={true}
 		>
-			Войти
+			<Link to="/registration">Войти</Link>
 		</Button>
 	);
 };

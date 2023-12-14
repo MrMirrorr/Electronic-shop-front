@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../redux/actions';
 import { selectProducts } from '../../redux/selectors';
 import { ProductCard } from '../../components';
+import { generateLoader } from '../../utils';
+import { ProductsCardsLoader } from '../loaders';
 import styled from 'styled-components';
 
 const ProductsCardsContainer = ({ className }) => {
@@ -13,15 +15,17 @@ const ProductsCardsContainer = ({ className }) => {
 		dispatch(fetchProducts());
 	}, [dispatch]);
 
-	return isLoading ? (
-		<h1>Loading...</h1>
-	) : error ? (
-		<h1>{error}</h1>
-	) : (
+	return (
 		<div className={className}>
-			{products.map((product) => (
-				<ProductCard key={product.id} product={product} />
-			))}
+			{isLoading ? (
+				generateLoader(9, <ProductsCardsLoader />)
+			) : error ? (
+				<h2>{error}</h2>
+			) : (
+				products.map((product) => (
+					<ProductCard key={product.id} product={product} />
+				))
+			)}
 		</div>
 	);
 };

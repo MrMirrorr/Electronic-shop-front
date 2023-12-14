@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories } from '../../redux/actions';
 import { selectCategories } from '../../redux/selectors';
+import { generateLoader } from '../../utils';
+import { SidebarLoader } from '../loaders';
 import styled from 'styled-components';
 
 const SidebarContainer = ({ className }) => {
@@ -17,7 +19,9 @@ const SidebarContainer = ({ className }) => {
 			<ul>
 				<li className="all selected">Все товары</li>
 				{isLoading ? (
-					<h1>Loading...</h1>
+					generateLoader(10, <SidebarLoader />)
+				) : error ? (
+					<h2>{error}</h2>
 				) : (
 					categories &&
 					categories.map(({ id, title }) => <li key={id}>{title}</li>)
@@ -37,7 +41,7 @@ export const Sidebar = styled(SidebarContainer)`
 
 		li {
 			margin-bottom: 10px;
-			padding: 10px 5px 10px 15px;
+			padding: 10px 15px;
 			border: 1px solid #999;
 			cursor: pointer;
 			transition: all 0.2s ease-in-out;

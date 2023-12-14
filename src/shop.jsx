@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { Footer, Header } from './components';
-import { Main } from './pages';
+import { Main, Registration } from './pages';
 import styled from 'styled-components';
 
 const AppColumn = styled.div`
@@ -21,6 +21,7 @@ export const Shop = () => {
 			<Page>
 				<Routes>
 					<Route path="/" element={<Main />} />
+					<Route path="/registration" element={<Registration />} />
 				</Routes>
 			</Page>
 			<Footer />

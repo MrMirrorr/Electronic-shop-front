@@ -1,11 +1,28 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const ButtonContainer = ({ className, children, uppercase = false, ...props }) => {
-	return (
-		<button className={className} {...props}>
-			{children}
-		</button>
-	);
+const ButtonContainer = ({
+	className,
+	children,
+	variant,
+	route,
+	uppercase = false,
+	...props
+}) => {
+	switch (variant) {
+		case 'link':
+			return (
+				<Link className={className} to={route} {...props}>
+					{children}
+				</Link>
+			);
+		default:
+			return (
+				<button className={className} {...props}>
+					{children}
+				</button>
+			);
+	}
 };
 
 export const Button = styled(ButtonContainer)`
