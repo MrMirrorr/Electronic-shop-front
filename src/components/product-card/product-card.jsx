@@ -4,21 +4,21 @@ import { Icon } from '../icon/icon';
 import styled from 'styled-components';
 
 const ProductCardContainer = ({ className, product }) => {
-	const { id, productTitle, productPrice, productAmount, productImageUrl } = product;
+	const { id, title, price, amount, imageUrl } = product;
 
 	return (
 		<div className={className}>
 			<div className="image">
 				<Link to={`product/${id}`}>
-					<img src={productImageUrl} alt={productTitle} />
+					<img src={imageUrl} alt={title} />
 				</Link>
 			</div>
 			<div className="card-footer">
 				<div className="title">
-					<Link to={`product/${id}`}>{productTitle}</Link>
+					<Link to={`product/${id}`}>{title}</Link>
 				</div>
-				<div className="price">{productPrice} р.</div>
-				<div className="amount">Осталось {productAmount} шт.</div>
+				<div className="price">{price} р.</div>
+				<div className="amount">Осталось {amount} шт.</div>
 				<div className="buttons">
 					<Button width="35px" height="35px" color="#525864" radius="50%">
 						<Icon id="fa-heart" maxHeight="14px" size="14px" />

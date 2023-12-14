@@ -1,19 +1,26 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategories } from '../../redux/actions';
+import { selectCategories } from '../../redux/selectors';
 import styled from 'styled-components';
 
 const SidebarContainer = ({ className }) => {
-	const { data: categories = [], isLoading } = {};
+	const dispatch = useDispatch();
+	const { categories, isLoading, error } = useSelector(selectCategories);
+
+	useEffect(() => {
+		dispatch(fetchCategories());
+	}, [dispatch]);
 
 	return (
 		<div className={className}>
 			<ul>
 				<li className="all selected">Все товары</li>
 				{isLoading ? (
-					<h1>Loading</h1>
+					<h1>Loading...</h1>
 				) : (
 					categories &&
-					categories.map(({ id, categoryName }) => (
-						<li key={id}>{categoryName}</li>
-					))
+					categories.map(({ id, title }) => <li key={id}>{title}</li>)
 				)}
 			</ul>
 		</div>

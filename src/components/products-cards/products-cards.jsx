@@ -1,18 +1,27 @@
-import { ProductCard } from '../product-card/product-card';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../../redux/actions';
+import { selectProducts } from '../../redux/selectors';
+import { ProductCard } from '../../components';
 import styled from 'styled-components';
 
 const ProductsCardsContainer = ({ className }) => {
-	const { data: products = [], isLoading } = {};
+	const dispatch = useDispatch();
+	const { products, isLoading, error } = useSelector(selectProducts);
 
-	return (
+	useEffect(() => {
+		dispatch(fetchProducts());
+	}, [dispatch]);
+
+	return isLoading ? (
+		<h1>Loading...</h1>
+	) : error ? (
+		<h1>{error}</h1>
+	) : (
 		<div className={className}>
-			{isLoading ? (
-				<h1>Loading...</h1>
-			) : (
-				products.map((product) => (
-					<ProductCard key={product.id} product={product} />
-				))
-			)}
+			{products.map((product) => (
+				<ProductCard key={product.id} product={product} />
+			))}
 		</div>
 	);
 };
