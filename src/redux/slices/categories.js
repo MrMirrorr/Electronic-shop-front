@@ -5,11 +5,20 @@ const initialState = {
 	categories: [],
 	isLoading: true,
 	error: null,
+	active: '',
 };
 
 const categoriesSlice = createSlice({
 	name: 'categories',
 	initialState,
+	reducers: {
+		setActiveCategory(state, action) {
+			state.active = action.payload;
+		},
+		resetActiveCategory(state) {
+			state.active = '';
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchCategories.pending, () => initialState)
@@ -26,4 +35,5 @@ const categoriesSlice = createSlice({
 	},
 });
 
+export const { setActiveCategory, resetActiveCategory } = categoriesSlice.actions;
 export const categoriesReducer = categoriesSlice.reducer;

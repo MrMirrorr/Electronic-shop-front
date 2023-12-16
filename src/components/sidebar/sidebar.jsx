@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { resetActiveCategory, setActiveCategory } from '../../redux/slices/categories';
 import { fetchCategories } from '../../redux/actions';
 import { selectCategories } from '../../redux/selectors';
 import { generateLoader } from '../../utils';
@@ -8,7 +9,7 @@ import styled from 'styled-components';
 
 const SidebarContainer = ({ className }) => {
 	const dispatch = useDispatch();
-	const { categories, isLoading, error } = useSelector(selectCategories);
+	const { categories, isLoading, error, active } = useSelector(selectCategories);
 
 	useEffect(() => {
 		dispatch(fetchCategories());
@@ -17,14 +18,27 @@ const SidebarContainer = ({ className }) => {
 	return (
 		<div className={className}>
 			<ul>
-				<li className="all selected">Все товары</li>
+				<li
+					className={!active ? 'selected' : ''}
+					onClick={() => dispatch(resetActiveCategory())}
+				>
+					Все товары
+				</li>
 				{isLoading ? (
 					generateLoader(10, <SidebarLoader />)
 				) : error ? (
 					<div>{error}</div>
 				) : (
 					categories &&
-					categories.map(({ id, title }) => <li key={id}>{title}</li>)
+					categories.map(({ id, title }) => (
+						<li
+							className={active === id ? 'selected' : ''}
+							key={id}
+							onClick={() => dispatch(setActiveCategory(id))}
+						>
+							{title}
+						</li>
+					))
 				)}
 			</ul>
 		</div>

@@ -3,4 +3,7 @@ export * from './select-categories';
 export * from './select-is-admin';
 export * from './select-is-auth';
 export * from './select-modal';
+export * from './select-product';
 export * from './select-products';
+export * from './select-search';
+export * from './select-sort-direction';

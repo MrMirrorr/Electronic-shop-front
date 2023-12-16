@@ -3,9 +3,14 @@ import axios from 'axios';
 
 export const fetchProducts = createAsyncThunk(
 	'products/fetchProducts',
-	async (_, { rejectWithValue }) => {
+	async (params, { rejectWithValue }) => {
 		try {
-			const res = await axios.get('/products', { timeout: 3000 });
+			const { search, limit, page, category, sort } = params;
+
+			const res = await axios.get(
+				`/products?search=${search}&limit=${limit}&page=${page}&category=${category}&sort=${sort}`,
+				{ timeout: 3000 },
+			);
 
 			const {
 				data: {

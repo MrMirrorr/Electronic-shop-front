@@ -1,4 +1,4 @@
 export const FUNCTION_ID = {
-	LOGOUT: 'logout',
 	FETCH_LOGOUT: 'fetchLogout',
+	REMOVE_COMMENT_ASYNC: 'removeCommentAsync',
 };

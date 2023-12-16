@@ -7,12 +7,12 @@ import styled from 'styled-components';
 
 const ModalContainer = ({ className }) => {
 	const dispatch = useDispatch();
-	const { isOpen, text, onConfirmId } = useSelector(selectModal);
+	const { isOpen, text, onConfirmId, onConfirmParams } = useSelector(selectModal);
 
 	const onConfirm = () => {
 		const onConfirmAction = getFunctionById(onConfirmId);
 		if (onConfirmId && onConfirmAction && typeof onConfirmAction === 'function') {
-			dispatch(onConfirmAction());
+			dispatch(onConfirmAction(onConfirmParams));
 		}
 		dispatch(closeModal());
 	};

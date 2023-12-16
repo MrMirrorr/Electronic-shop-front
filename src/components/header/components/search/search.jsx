@@ -1,19 +1,30 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearchValue, setShouldSearch } from '../../../../redux/slices/ui';
+import { selectSearch } from '../../../../redux/selectors';
+import { debounce } from '../../../../utils';
 import { Icon, Input } from '../../../../components';
 import styled from 'styled-components';
 
 const SearchContainer = ({ className }) => {
-	const [value, setValue] = useState('');
+	const dispatch = useDispatch();
+	const { value } = useSelector(selectSearch);
+
+	const startDelayedSearch = useMemo(
+		() => debounce(() => dispatch(setShouldSearch()), 2000),
+		[dispatch],
+	);
 
 	const onChange = ({ target }) => {
-		setValue(target.value);
+		dispatch(setSearchValue(target.value));
+		startDelayedSearch();
 	};
 
 	return (
 		<div className={className}>
 			<Input
 				className="search-input"
-				type="text"
+				type="search"
 				value={value}
 				onChange={onChange}
 				placeholder="Поиск товаров"

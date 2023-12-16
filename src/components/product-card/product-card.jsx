@@ -40,6 +40,7 @@ const ProductCardContainer = ({ className, product }) => {
 };
 
 export const ProductCard = styled(ProductCardContainer)`
+	max-height: 420px;
 	padding: 10px;
 	display: flex;
 	flex-direction: column;

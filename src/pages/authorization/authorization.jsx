@@ -27,7 +27,7 @@ const AuthorizationContainer = ({ className }) => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isValid },
+		formState: { errors },
 	} = useForm({
 		defaultValues: {
 			email: '',
