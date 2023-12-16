@@ -1,31 +1,28 @@
-import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { openModal } from '../../../../redux/slices/ui';
+import { selectIsAuth, selectIsAdmin } from '../../../../redux/selectors';
+import { FUNCTION_ID } from '../../../../redux/constants/function-id';
+import { usePopup } from '../../../../hooks';
 import { Icon, Button } from '../../../../components';
 import styled from 'styled-components';
 
 const ControlPanelContainer = ({ className }) => {
-	const [visiblePopup, setVisiblePopup] = useState(false);
-	const userBlockRef = useRef(null);
+	const { isVisiblePopup, popupTogglerRef, setIsVisiblePopup, toggleVisiblePopup } =
+		usePopup();
+	const dispatch = useDispatch();
+	const isAuth = useSelector(selectIsAuth);
+	const isAdmin = useSelector(selectIsAdmin);
 
-	const toggleVisiblePopup = () => setVisiblePopup(!visiblePopup);
-
-	const handleOutsideClick = ({ target }) => {
-		if (!userBlockRef.current.contains(target)) {
-			setVisiblePopup(false);
-		}
+	const onClickLogout = () => {
+		setIsVisiblePopup(false);
+		dispatch(
+			openModal({
+				text: 'Вы действительно хотите выйти?',
+				onConfirmId: FUNCTION_ID.FETCH_LOGOUT,
+			}),
+		);
 	};
-
-	useEffect(() => {
-		if (visiblePopup) {
-			document.body.addEventListener('click', handleOutsideClick);
-			return;
-		}
-
-		return () => document.body.removeEventListener('click', handleOutsideClick);
-	}, [visiblePopup]);
-
-	const isAuth = false;
-	const isAdmin = false;
 
 	return isAuth ? (
 		<div className={className}>
@@ -35,14 +32,14 @@ const ControlPanelContainer = ({ className }) => {
 			<Link to="cart" className="cart-link">
 				<Icon id="fa-shopping-basket" size="32px" clickable={true} />
 			</Link>
-			<div className="user-block" ref={userBlockRef}>
+			<div className="user-block" ref={popupTogglerRef}>
 				<Icon
 					id="fa-user-circle-o"
 					size="32px"
 					clickable={true}
 					onClick={toggleVisiblePopup}
 				/>
-				{visiblePopup && (
+				{isVisiblePopup && (
 					<ul className="popup-list">
 						{isAdmin && (
 							<>
@@ -51,7 +48,9 @@ const ControlPanelContainer = ({ className }) => {
 							</>
 						)}
 						<li className="popup-list-item">Профиль</li>
-						<li className="popup-list-item">Выход</li>
+						<li className="popup-list-item" onClick={onClickLogout}>
+							Выход
+						</li>
 					</ul>
 				)}
 			</div>
@@ -59,7 +58,7 @@ const ControlPanelContainer = ({ className }) => {
 	) : (
 		<Button
 			variant="link"
-			to="/registration"
+			to="/authorization"
 			width="150px"
 			height="35px"
 			color="#525864"
@@ -67,7 +66,7 @@ const ControlPanelContainer = ({ className }) => {
 			radius="20px"
 			uppercase={true}
 		>
-			<Link to="/registration">Войти</Link>
+			Войти
 		</Button>
 	);
 };

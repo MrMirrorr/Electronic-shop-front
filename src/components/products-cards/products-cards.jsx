@@ -20,7 +20,7 @@ const ProductsCardsContainer = ({ className }) => {
 			{isLoading ? (
 				generateLoader(9, <ProductsCardsLoader />)
 			) : error ? (
-				<h2>{error}</h2>
+				<div className="error">{error}</div>
 			) : (
 				products.map((product) => (
 					<ProductCard key={product.id} product={product} />

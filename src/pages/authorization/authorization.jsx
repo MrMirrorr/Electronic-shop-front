@@ -1,21 +1,16 @@
 import { useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { fetchLogin } from '../../redux/actions';
 import { resetServerError } from '../../redux/slices/auth';
-import { fetchRegister } from '../../redux/actions';
 import { selectAuth, selectIsAuth } from '../../redux/selectors';
 import { AuthFormError, Button, Container, Icon, Input } from '../../components';
 import styled from 'styled-components';
 
-const registerFormSchema = yup.object().shape({
-	fullName: yup
-		.string()
-		.required('Введите ваше полное имя')
-		.min(2, 'Полное имя минимум 2 символа.')
-		.max(30, 'Максимум 40 символов.'),
+const authFormSchema = yup.object().shape({
 	email: yup.string().required('Заполните почту').email('Не валидная почта'),
 	password: yup
 		.string()
@@ -26,25 +21,19 @@ const registerFormSchema = yup.object().shape({
 		)
 		.min(6, 'Неверный пароль. Минимум 6 символов.')
 		.max(30, 'Неверный пароль. Максимум 30 символов.'),
-	confirmPassword: yup
-		.string()
-		.required('Повторите пароль')
-		.oneOf([yup.ref('password')], 'Пароли не совпадают'),
 });
 
-const RegistrationContainer = ({ className }) => {
+const AuthorizationContainer = ({ className }) => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
-			fullName: '',
 			email: '',
 			password: '',
-			confirmPassword: '',
 		},
-		resolver: yupResolver(registerFormSchema),
+		resolver: yupResolver(authFormSchema),
 	});
 
 	const dispatch = useDispatch();
@@ -56,14 +45,10 @@ const RegistrationContainer = ({ className }) => {
 	}, [dispatch]);
 
 	const onSubmit = (values) => {
-		dispatch(fetchRegister(values));
+		dispatch(fetchLogin(values));
 	};
 
-	const formError =
-		errors?.fullName?.message ||
-		errors?.email?.message ||
-		errors?.password?.message ||
-		errors?.confirmPassword?.message;
+	const formError = errors?.email?.message || errors?.password?.message;
 	const errorMessage = formError || serverError;
 
 	if (isAuth) {
@@ -72,18 +57,11 @@ const RegistrationContainer = ({ className }) => {
 
 	return (
 		<div className={className}>
-			<h2>Регистрация</h2>
+			<h2>Авторизация</h2>
 			<Container>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Input
-						type="fullName"
-						placeholder="Полное имя"
-						{...register('fullName', {
-							onChange: () => dispatch(resetServerError()),
-						})}
-					/>
-					<Input
-						type="email"
+						type="text"
 						placeholder="Почта"
 						{...register('email', {
 							onChange: () => dispatch(resetServerError()),
@@ -93,13 +71,6 @@ const RegistrationContainer = ({ className }) => {
 						type="password"
 						placeholder="Пароль"
 						{...register('password', {
-							onChange: () => dispatch(resetServerError()),
-						})}
-					/>
-					<Input
-						type="password"
-						placeholder="Повтор пароля"
-						{...register('confirmPassword', {
 							onChange: () => dispatch(resetServerError()),
 						})}
 					/>
@@ -116,17 +87,18 @@ const RegistrationContainer = ({ className }) => {
 						{isLoading ? (
 							<Icon id="fa-spinner fa-pulse fa-fw" />
 						) : (
-							'Зарегистрироваться'
+							'Авторизоваться'
 						)}
 					</Button>
 					{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
 				</form>
+				<Link to="/registration">Зарегистрироваться</Link>
 			</Container>
 		</div>
 	);
 };
 
-export const Registration = styled(RegistrationContainer)`
+export const Authorization = styled(AuthorizationContainer)`
 	text-align: center;
 
 	form {
@@ -134,7 +106,7 @@ export const Registration = styled(RegistrationContainer)`
 		flex-direction: column;
 		gap: 20px;
 		max-width: 300px;
-		margin: 0 auto;
+		margin: 0 auto 20px;
 
 		input {
 			padding: 10px 20px;
@@ -142,5 +114,9 @@ export const Registration = styled(RegistrationContainer)`
 			border: 1px solid #000;
 			background: #fff;
 		}
+	}
+
+	a {
+		text-decoration: underline;
 	}
 `;

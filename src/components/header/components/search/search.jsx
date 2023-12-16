@@ -1,41 +1,25 @@
 import { useState } from 'react';
-import { Icon } from '../../..';
+import { Icon, Input } from '../../../../components';
 import styled from 'styled-components';
 
 const SearchContainer = ({ className }) => {
 	const [value, setValue] = useState('');
 
-	const onChangeHandler = ({ target }) => {
+	const onChange = ({ target }) => {
 		setValue(target.value);
-	};
-
-	const onKeyDownHandler = ({ target }) => {
-		if ((target.keyCode = 13)) {
-			console.log('Pressed Enter');
-		}
-	};
-
-	const onClickHandler = () => {
-		console.log('run search');
 	};
 
 	return (
 		<div className={className}>
-			<input
+			<Input
 				className="search-input"
 				type="text"
 				value={value}
-				onChange={onChangeHandler}
-				onKeyDown={onKeyDownHandler}
+				onChange={onChange}
 				placeholder="Поиск товаров"
 			/>
 			<div className="icon-wrapper">
-				<Icon
-					id="fa-search"
-					color="#fff"
-					clickable={true}
-					onClick={onClickHandler}
-				/>
+				<Icon id="fa-search" color="#fff" />
 			</div>
 		</div>
 	);

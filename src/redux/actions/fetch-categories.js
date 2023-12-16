@@ -3,12 +3,9 @@ import axios from 'axios';
 
 export const fetchCategories = createAsyncThunk(
 	'categories/fetchCategories',
-	async () => {
+	async (_, { rejectWithValue }) => {
 		try {
-			const res = await Promise.race([
-				axios.get('/categories'),
-				new Promise((_, reject) => setTimeout(() => reject(new Error()), 3000)),
-			]);
+			const res = await axios.get('/categories', { timeout: 3000 });
 
 			const {
 				data: { data, error },
@@ -16,7 +13,20 @@ export const fetchCategories = createAsyncThunk(
 
 			return { categories: data, error };
 		} catch (err) {
-			return { error: 'Категории не были загружены' };
+			console.log('error fetchProducts', err.message);
+			if (err.code === 'ERR_BAD_RESPONSE') {
+				return rejectWithValue({
+					error: 'Категории не были получены с сервера, попробуйте еще раз позднее',
+				});
+			}
+			if (err.code === 'ECONNABORTED') {
+				return rejectWithValue({
+					error: 'Превышено время ожидания ответа',
+				});
+			}
+			return rejectWithValue({
+				error: 'Что-то пошло не так',
+			});
 		}
 	},
 );

@@ -45,4 +45,10 @@ export const Button = styled(ButtonContainer)`
 		color: ${({ bgColor = '#ccc' }) => bgColor};
 		background-color: ${({ color = 'inherit' }) => color};
 	}
+
+	&:disabled {
+		color: #6666668c;
+		background-color: #dfdfdf;
+		cursor: auto;
+	}
 `;

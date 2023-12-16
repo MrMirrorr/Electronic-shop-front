@@ -21,7 +21,7 @@ const SidebarContainer = ({ className }) => {
 				{isLoading ? (
 					generateLoader(10, <SidebarLoader />)
 				) : error ? (
-					<h2>{error}</h2>
+					<div>{error}</div>
 				) : (
 					categories &&
 					categories.map(({ id, title }) => <li key={id}>{title}</li>)

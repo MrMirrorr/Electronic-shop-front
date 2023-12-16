@@ -1,6 +1,9 @@
+import { useLayoutEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Footer, Header } from './components';
-import { Main, Registration } from './pages';
+import { useDispatch } from 'react-redux';
+import { fetchAuthMe } from './redux/actions';
+import { Authorization, Main, Registration } from './pages';
+import { Footer, Header, Modal } from './components';
 import styled from 'styled-components';
 
 const AppColumn = styled.div`
@@ -15,6 +18,14 @@ const Page = styled.div`
 `;
 
 export const Shop = () => {
+	const dispatch = useDispatch();
+
+	useLayoutEffect(() => {
+		// const intervalId = setInterval(() => dispatch(fetchAuthMe()), 60000);
+		dispatch(fetchAuthMe());
+		// return () => clearInterval(intervalId);
+	}, [dispatch]);
+
 	return (
 		<AppColumn>
 			<Header />
@@ -22,9 +33,11 @@ export const Shop = () => {
 				<Routes>
 					<Route path="/" element={<Main />} />
 					<Route path="/registration" element={<Registration />} />
+					<Route path="/authorization" element={<Authorization />} />
 				</Routes>
 			</Page>
 			<Footer />
+			<Modal />
 		</AppColumn>
 	);
 };

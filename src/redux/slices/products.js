@@ -11,26 +11,18 @@ const initialState = {
 const productsSlice = createSlice({
 	name: 'products',
 	initialState,
-	reducers: {},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchProducts.pending, () => initialState)
 			.addCase(fetchProducts.fulfilled, (state, action) => {
-				if (action.payload.error) {
-					state.products = initialState.products;
-					state.lastPage = initialState.lastPage;
-					state.isLoading = false;
-					state.error = action.payload.error;
-				} else {
-					state.error = initialState.error;
-					state.products = action.payload.products;
-					state.lastPage = action.payload.lastPage;
-					state.isLoading = false;
-				}
+				state.error = initialState.error;
+				state.products = action.payload.products;
+				state.lastPage = action.payload.lastPage;
+				state.isLoading = false;
 			})
 			.addCase(fetchProducts.rejected, (state, action) => {
 				state.products = initialState.products;
-				state.lastPage = action.payload.lastPage;
+				state.lastPage = initialState.lastPage;
 				state.isLoading = false;
 				state.error = action.payload.error;
 			});

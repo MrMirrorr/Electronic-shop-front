@@ -87,6 +87,7 @@ export const ProductCard = styled(ProductCardContainer)`
 				position: absolute;
 				bottom: 0;
 				left: 0;
+				pointer-events: none;
 			}
 		}
 
