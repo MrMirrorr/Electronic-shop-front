@@ -1,4 +1,4 @@
-import { Button } from '../../components';
+import { Button } from '..';
 import styled from 'styled-components';
 
 const PaginationContainer = ({ className, page, lastPage, setPage }) => {

@@ -2,26 +2,13 @@ import { useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import { authFormScheme } from '../../yup-schemes/';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { fetchLogin } from '../../redux/actions';
 import { resetServerError } from '../../redux/slices/auth';
 import { selectAuth, selectIsAuth } from '../../redux/selectors';
 import { AuthFormError, Button, Container, Icon, Input } from '../../components';
 import styled from 'styled-components';
-
-const authFormSchema = yup.object().shape({
-	email: yup.string().required('Заполните почту').email('Не валидная почта'),
-	password: yup
-		.string()
-		.required('Заполните пароль')
-		.matches(
-			/^[\w#%]+$/,
-			'Неверно заполнен пароль. Допускаются буквы, цифры и символы # %',
-		)
-		.min(6, 'Неверный пароль. Минимум 6 символов.')
-		.max(30, 'Неверный пароль. Максимум 30 символов.'),
-});
 
 const AuthorizationContainer = ({ className }) => {
 	const {
@@ -33,7 +20,7 @@ const AuthorizationContainer = ({ className }) => {
 			email: '',
 			password: '',
 		},
-		resolver: yupResolver(authFormSchema),
+		resolver: yupResolver(authFormScheme),
 	});
 
 	const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../../../redux/slices/ui';
 import { selectIsAuth, selectIsAdmin } from '../../../../redux/selectors';
@@ -8,6 +8,7 @@ import { Icon, Button } from '../../../../components';
 import styled from 'styled-components';
 
 const ControlPanelContainer = ({ className }) => {
+	const navigate = useNavigate();
 	const { isVisiblePopup, popupTogglerRef, setIsVisiblePopup, toggleVisiblePopup } =
 		usePopup();
 	const dispatch = useDispatch();
@@ -43,7 +44,12 @@ const ControlPanelContainer = ({ className }) => {
 					<ul className="popup-list">
 						{isAdmin && (
 							<>
-								<li className="popup-list-item">Товары</li>
+								<li
+									className="popup-list-item"
+									onClick={() => navigate('/products-list-admin')}
+								>
+									Товары
+								</li>
 								<li className="popup-list-item">Пользователи</li>
 							</>
 						)}

@@ -2,7 +2,14 @@ import { useLayoutEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { fetchAuthMe } from './redux/actions';
-import { Authorization, Main, Product, Registration } from './pages';
+import {
+	AddProduct,
+	Authorization,
+	Main,
+	Product,
+	ProductsListAdmin,
+	Registration,
+} from './pages';
 import { Footer, Header, Modal } from './components';
 import styled from 'styled-components';
 
@@ -35,6 +42,8 @@ export const Shop = () => {
 					<Route path="/registration" element={<Registration />} />
 					<Route path="/authorization" element={<Authorization />} />
 					<Route path="/product/:productId" element={<Product />} />
+					<Route path="/products-list-admin" element={<ProductsListAdmin />} />
+					<Route path="/add-product" element={<AddProduct />} />
 				</Routes>
 			</Page>
 			<Footer />

@@ -3,34 +3,12 @@ import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { registerFormScheme } from '../../yup-schemes';
 import { resetServerError } from '../../redux/slices/auth';
 import { fetchRegister } from '../../redux/actions';
 import { selectAuth, selectIsAuth } from '../../redux/selectors';
 import { AuthFormError, Button, Container, Icon, Input } from '../../components';
 import styled from 'styled-components';
-
-const registerFormSchema = yup.object().shape({
-	fullName: yup
-		.string()
-		.required('Введите ваше полное имя')
-		.min(2, 'Полное имя минимум 2 символа.')
-		.max(30, 'Максимум 40 символов.'),
-	email: yup.string().required('Заполните почту').email('Не валидная почта'),
-	password: yup
-		.string()
-		.required('Заполните пароль')
-		.matches(
-			/^[\w#%]+$/,
-			'Неверно заполнен пароль. Допускаются буквы, цифры и символы # %',
-		)
-		.min(6, 'Неверный пароль. Минимум 6 символов.')
-		.max(30, 'Неверный пароль. Максимум 30 символов.'),
-	confirmPassword: yup
-		.string()
-		.required('Повторите пароль')
-		.oneOf([yup.ref('password')], 'Пароли не совпадают'),
-});
 
 const RegistrationContainer = ({ className }) => {
 	const {
@@ -44,7 +22,7 @@ const RegistrationContainer = ({ className }) => {
 			password: '',
 			confirmPassword: '',
 		},
-		resolver: yupResolver(registerFormSchema),
+		resolver: yupResolver(registerFormScheme),
 	});
 
 	const dispatch = useDispatch();

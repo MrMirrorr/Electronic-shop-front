@@ -15,6 +15,11 @@ export const fetchProduct = createAsyncThunk(
 			return { product, comments, error };
 		} catch (err) {
 			console.log('error fetchProduct', err);
+			if (err.response.data.error) {
+				return rejectWithValue({
+					error: err.response.data.error,
+				});
+			}
 			if (err.code === 'ERR_BAD_RESPONSE') {
 				return rejectWithValue({
 					error: 'Товар не был получен с сервера, попробуйте еще раз позднее',
@@ -23,11 +28,6 @@ export const fetchProduct = createAsyncThunk(
 			if (err.code === 'ECONNABORTED') {
 				return rejectWithValue({
 					error: 'Превышено время ожидания ответа',
-				});
-			}
-			if (err.response.data.error) {
-				return rejectWithValue({
-					error: err.response.data.error,
 				});
 			}
 			return rejectWithValue({
