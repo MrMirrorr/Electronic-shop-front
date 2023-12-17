@@ -29,20 +29,22 @@ const ProductsCardsContainer = ({ className }) => {
 	}, [dispatch, page, shouldSearch, category, sort]);
 
 	return (
-		<div className={className}>
-			{isLoading ? (
-				generateLoader(9, <ProductsCardsLoader />)
-			) : error ? (
-				<div className="error">{error}</div>
-			) : (
-				products.map((product) => (
-					<ProductCard key={product.id} product={product} />
-				))
-			)}
+		<>
+			<div className={className}>
+				{isLoading ? (
+					generateLoader(9, <ProductsCardsLoader />)
+				) : error ? (
+					<div className="error">{error}</div>
+				) : (
+					products.map((product) => (
+						<ProductCard key={product.id} product={product} />
+					))
+				)}
+			</div>
 			{lastPage > 1 && products.length > 0 && (
 				<Pagination setPage={setPage} page={page} lastPage={lastPage} />
 			)}
-		</div>
+		</>
 	);
 };
 

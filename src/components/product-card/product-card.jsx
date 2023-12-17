@@ -54,7 +54,7 @@ export const ProductCard = styled(ProductCardContainer)`
 	}
 
 	.image {
-		height: 260px;
+		max-height: 260px;
 		display: flex;
 		overflow: hidden;
 

@@ -1,9 +1,10 @@
-import { fetchLogout, removeCommentAsync } from '../actions';
+import { fetchLogout, removeCommentAsync, removeProductAsync } from '../actions';
 
 export const getFunctionById = (id) => {
 	const functions = {
 		fetchLogout,
 		removeCommentAsync,
+		removeProductAsync,
 	};
 	return functions[id];
 };

@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { addProductFormScheme } from '../../yup-schemes';
-import { fetchCategories } from '../../redux/actions';
-import { selectCategories } from '../../redux/selectors';
-import { createProduct } from '../../api';
+import { fetchCategories, fetchProduct } from '../../redux/actions';
+import { selectCategories, selectProduct } from '../../redux/selectors';
+import { createProduct, updateProduct } from '../../api';
+import { checkServerErrorAndNavigate } from './utils/check-server-error-and-navigate';
 import { AuthFormError, Button, Container, Input } from '../../components';
 import styled from 'styled-components';
 
 const AddProductContainer = ({ className }) => {
+	const params = useParams();
+	const { product } = useSelector(selectProduct);
+
 	const {
 		register,
 		handleSubmit,
@@ -28,6 +32,18 @@ const AddProductContainer = ({ className }) => {
 		resolver: yupResolver(addProductFormScheme),
 	});
 
+	useEffect(() => {
+		if (params.id && product) {
+			setValue('title', product.title);
+			setValue('categoryId', product.categoryId);
+			setValue('price', product.price);
+			setValue('amount', product.amount);
+			setValue('imageUrl', product.imageUrl);
+			setValue('description', product.description);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [product]);
+
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { categories } = useSelector(selectCategories);
@@ -39,18 +55,24 @@ const AddProductContainer = ({ className }) => {
 
 	useEffect(() => {
 		dispatch(fetchCategories());
+
+		if (params.id) {
+			dispatch(fetchProduct(params.id));
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch]);
 
 	const onSubmit = async (data) => {
-		const res = await createProduct(data);
+		if (params.id) {
+			const res = await updateProduct(data, params.id);
 
-		if (res.error) {
-			setServerError(res.error);
+			checkServerErrorAndNavigate(res, params.id, setServerError, navigate);
 			return;
 		}
 
-		setServerError(null);
-		navigate(`/product/${res.newProduct.id}`);
+		const res = await createProduct(data);
+
+		checkServerErrorAndNavigate(res, res?.newProduct?.id, setServerError, navigate);
 	};
 
 	const formError =
@@ -70,12 +92,14 @@ const AddProductContainer = ({ className }) => {
 					<Input
 						type="text"
 						placeholder="Наименование"
-						{...register('title')}
+						{...register('title', { onChange: () => setServerError(null) })}
 					/>
 					<select
 						type="select"
 						onChange={onSelectCategory}
-						{...register('categoryId')}
+						{...register('categoryId', {
+							onChange: () => setServerError(null),
+						})}
 					>
 						<option value="0">Выберите категорию</option>
 						{categories.map(({ id, title }) => (
@@ -84,20 +108,28 @@ const AddProductContainer = ({ className }) => {
 							</option>
 						))}
 					</select>
-					<Input type="number" placeholder="Стоимость" {...register('price')} />
+					<Input
+						type="number"
+						placeholder="Стоимость"
+						{...register('price', { onChange: () => setServerError(null) })}
+					/>
 					<Input
 						type="number"
 						placeholder="Количество"
-						{...register('amount')}
+						{...register('amount', { onChange: () => setServerError(null) })}
 					/>
 					<Input
 						type="text"
 						placeholder="Изображение (URL)"
-						{...register('imageUrl')}
+						{...register('imageUrl', {
+							onChange: () => setServerError(null),
+						})}
 					/>
 					<textarea
 						placeholder="Описание и характеристики"
-						{...register('description')}
+						{...register('description', {
+							onChange: () => setServerError(null),
+						})}
 					/>
 					<Button
 						height="35px"
@@ -106,8 +138,9 @@ const AddProductContainer = ({ className }) => {
 						radius="20px"
 						uppercase={true}
 						type="submit"
+						disabled={formError}
 					>
-						Сохранить и добавить
+						{params.id ? 'Сохранить' : 'Сохранить и добавить'}
 					</Button>
 					{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
 				</form>

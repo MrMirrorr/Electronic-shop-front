@@ -44,6 +44,7 @@ export const Shop = () => {
 					<Route path="/product/:productId" element={<Product />} />
 					<Route path="/products-list-admin" element={<ProductsListAdmin />} />
 					<Route path="/add-product" element={<AddProduct />} />
+					<Route path="/add-product/:id" element={<AddProduct />} />
 				</Routes>
 			</Page>
 			<Footer />

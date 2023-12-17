@@ -1,14 +1,13 @@
 import axios from 'axios';
 
-export const createProduct = async (data) => {
+export const updateProduct = async (data, id) => {
 	try {
 		const {
 			data: { data: newProduct },
-		} = await axios.post('/products', data);
-
-		return { newProduct };
+		} = await axios.patch(`/products/${id}`, data);
+		return newProduct;
 	} catch (err) {
-		console.log('error create product', err);
+		console.log('error update product', err);
 		if (err.response.data.error) {
 			return {
 				error: err.response.data.error,

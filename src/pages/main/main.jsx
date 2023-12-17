@@ -17,7 +17,8 @@ const MainContainer = ({ className }) => {
 };
 
 export const Main = styled(MainContainer)`
-	padding: 20px 0;
+	padding: 20px 0 70px;
+	position: relative;
 
 	.main-block {
 		padding-top: 20px;

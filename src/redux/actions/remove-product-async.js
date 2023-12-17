@@ -1,19 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const removeCommentAsync = createAsyncThunk(
-	'product/removeCommentAsync',
-	async (commentData, { rejectWithValue }) => {
+export const removeProductAsync = createAsyncThunk(
+	'products/removeProductAsync',
+	async (id, { rejectWithValue }) => {
 		try {
-			const { productId, commentId } = commentData;
-
-			const {
-				data: { error },
-			} = await axios.delete(`/products/${productId}/comments/${commentId}`, {
+			await axios.delete(`/products/${id}`, {
 				timeout: '3000',
 			});
 
-			return { commentId, error };
+			return { id };
 		} catch (err) {
 			console.log('error fetchProduct', err);
 			if (err.response.data.error) {
@@ -23,7 +19,7 @@ export const removeCommentAsync = createAsyncThunk(
 			}
 			if (err.code === 'ERR_BAD_RESPONSE') {
 				return rejectWithValue({
-					error: 'Комментарий не был удален, попробуйте еще раз позднее',
+					error: 'Товар не был удален, попробуйте еще раз позднее',
 				});
 			}
 			if (err.code === 'ECONNABORTED') {
