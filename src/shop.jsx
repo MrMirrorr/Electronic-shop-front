@@ -9,6 +9,7 @@ import {
 	Product,
 	ProductsListAdmin,
 	Registration,
+	UsersListAdmin,
 } from './pages';
 import { Footer, Header, Modal } from './components';
 import styled from 'styled-components';
@@ -45,6 +46,7 @@ export const Shop = () => {
 					<Route path="/products-list-admin" element={<ProductsListAdmin />} />
 					<Route path="/add-product" element={<AddProduct />} />
 					<Route path="/add-product/:id" element={<AddProduct />} />
+					<Route path="/users-list-admin" element={<UsersListAdmin />} />
 				</Routes>
 			</Page>
 			<Footer />

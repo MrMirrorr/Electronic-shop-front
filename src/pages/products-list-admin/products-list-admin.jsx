@@ -5,6 +5,7 @@ import { openModal } from '../../redux/slices/ui';
 import { fetchProducts } from '../../redux/actions';
 import {
 	selectCategories,
+	selectIsAdmin,
 	selectProducts,
 	selectSearch,
 	selectSortDirection,
@@ -13,12 +14,12 @@ import { FUNCTION_ID } from '../../redux/constants/function-id';
 import { PAGINATION_LIMIT } from '../../constants';
 import { generateLoader } from '../../utils';
 import { ProductsListLoader } from '../../components/loaders';
-import { Button, Container, Icon, Pagination } from '../../components';
+import { AlertError, Button, Container, Icon, Pagination } from '../../components';
 import styled from 'styled-components';
 
 const ProductsListAdminContainer = ({ className }) => {
 	const dispatch = useDispatch();
-	const { products, lastPage, isLoading, error, removeIsLoading, removeError } =
+	const { products, lastPage, isLoading, error, deletionIsLoading, deletionError } =
 		useSelector(selectProducts);
 	const [page, setPage] = useState(1);
 	const { value: search, shouldSearch } = useSelector(selectSearch);
@@ -42,6 +43,15 @@ const ProductsListAdminContainer = ({ className }) => {
 		);
 	};
 
+	const isAdmin = useSelector(selectIsAdmin);
+	if (!isAdmin) {
+		return (
+			<Container>
+				<AlertError>Доступ запрещен</AlertError>
+			</Container>
+		);
+	}
+
 	return (
 		<div className={className}>
 			<Container>
@@ -59,7 +69,7 @@ const ProductsListAdminContainer = ({ className }) => {
 						Добавить товар
 					</Button>
 				</div>
-
+				{deletionError && <AlertError>{deletionError}</AlertError>}
 				<table>
 					<thead>
 						<tr>
@@ -75,7 +85,7 @@ const ProductsListAdminContainer = ({ className }) => {
 					{isLoading ? (
 						generateLoader(9, <ProductsListLoader />)
 					) : error ? (
-						<div className="error">{error}</div>
+						<AlertError className="error">{error}</AlertError>
 					) : (
 						<tbody>
 							{products.map((product) => (
@@ -89,33 +99,25 @@ const ProductsListAdminContainer = ({ className }) => {
 									<td className="controls">
 										<Link
 											to={
-												!removeIsLoading
+												!deletionIsLoading
 													? `/add-product/${product.id}`
 													: '#'
 											}
 										>
 											<Icon
 												id="fa-pencil"
-												color={
-													!removeIsLoading
-														? '#529940'
-														: '#cccccc'
-												}
-												clickable={!removeIsLoading}
+												color="#529940"
+												clickable={!deletionIsLoading}
+												disabled={deletionIsLoading}
 											/>
 										</Link>
 										<Icon
 											id="fa-trash"
 											margin="0 0 0 25px"
-											color={
-												!removeIsLoading ? '#ff0000' : '#cccccc'
-											}
-											clickable={!removeIsLoading}
-											onClick={() =>
-												!removeIsLoading
-													? onProductRemove(product.id)
-													: {}
-											}
+											color="#ff0000"
+											clickable={!deletionIsLoading}
+											disabled={deletionIsLoading}
+											onClick={() => onProductRemove(product.id)}
 										/>
 									</td>
 								</tr>

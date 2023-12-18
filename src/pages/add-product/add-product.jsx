@@ -8,7 +8,7 @@ import { fetchCategories, fetchProduct } from '../../redux/actions';
 import { selectCategories, selectProduct } from '../../redux/selectors';
 import { createProduct, updateProduct } from '../../api';
 import { checkServerErrorAndNavigate } from './utils/check-server-error-and-navigate';
-import { AuthFormError, Button, Container, Input } from '../../components';
+import { AlertError, Button, Container, Input } from '../../components';
 import styled from 'styled-components';
 
 const AddProductContainer = ({ className }) => {
@@ -64,7 +64,7 @@ const AddProductContainer = ({ className }) => {
 
 	const onSubmit = async (data) => {
 		if (params.id) {
-			const res = await updateProduct(data, params.id);
+			const res = await updateProduct(params.id, data);
 
 			checkServerErrorAndNavigate(res, params.id, setServerError, navigate);
 			return;
@@ -142,7 +142,7 @@ const AddProductContainer = ({ className }) => {
 					>
 						{params.id ? 'Сохранить' : 'Сохранить и добавить'}
 					</Button>
-					{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
+					{errorMessage && <AlertError>{errorMessage}</AlertError>}
 				</form>
 			</Container>
 		</div>

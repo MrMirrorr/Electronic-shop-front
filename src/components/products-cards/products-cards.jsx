@@ -10,7 +10,7 @@ import {
 import { generateLoader } from '../../utils';
 import { ProductsCardsLoader } from '../loaders';
 import { PAGINATION_LIMIT } from '../../constants';
-import { Pagination, ProductCard } from '../../components';
+import { AlertError, Pagination, ProductCard } from '../../components';
 import styled from 'styled-components';
 
 const ProductsCardsContainer = ({ className }) => {
@@ -34,7 +34,7 @@ const ProductsCardsContainer = ({ className }) => {
 				{isLoading ? (
 					generateLoader(9, <ProductsCardsLoader />)
 				) : error ? (
-					<div className="error">{error}</div>
+					<AlertError className="error">{error}</AlertError>
 				) : (
 					products.map((product) => (
 						<ProductCard key={product.id} product={product} />

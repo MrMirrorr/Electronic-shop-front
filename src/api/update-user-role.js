@@ -1,21 +1,19 @@
 import axios from 'axios';
 
-export const updateProduct = async (id, data) => {
+export const updateUserRole = async (id, data) => {
 	try {
+		const res = await axios.patch(`/users/${id}`, data);
+
 		const {
-			data: { data: newProduct },
-		} = await axios.patch(`/products/${id}`, data);
-		return newProduct;
+			data: { data: newUser },
+		} = res;
+
+		return newUser;
 	} catch (err) {
 		console.log('error update product', err);
 		if (err.response.data.error) {
 			return {
 				error: err.response.data.error,
-			};
-		}
-		if (err.response.data.msg) {
-			return {
-				error: err.response.data.msg,
 			};
 		}
 		if (err.code === 'ERR_BAD_RESPONSE') {

@@ -5,7 +5,7 @@ const PaginationContainer = ({ className, page, lastPage, setPage }) => {
 	return (
 		<div className={className}>
 			<Button
-				width="250px"
+				width="100px"
 				height="35px"
 				color="#525864"
 				fontWeight="400"
@@ -16,7 +16,7 @@ const PaginationContainer = ({ className, page, lastPage, setPage }) => {
 				В начало
 			</Button>
 			<Button
-				width="250px"
+				width="130px"
 				height="35px"
 				color="#525864"
 				fontWeight="400"
@@ -27,10 +27,10 @@ const PaginationContainer = ({ className, page, lastPage, setPage }) => {
 				Предыдущая
 			</Button>
 			<div className="current-page">
-				Страница: {page} из {lastPage}
+				{page} из {lastPage}
 			</div>
 			<Button
-				width="250px"
+				width="130px"
 				height="35px"
 				color="#525864"
 				fontWeight="400"
@@ -41,7 +41,7 @@ const PaginationContainer = ({ className, page, lastPage, setPage }) => {
 				Следующая
 			</Button>
 			<Button
-				width="250px"
+				width="100px"
 				height="35px"
 				color="#525864"
 				fontWeight="400"
@@ -59,7 +59,7 @@ export const Pagination = styled(PaginationContainer)`
 	display: flex;
 	justify-content: center;
 	margin: 0 0 20px;
-	padding: 0 35px;
+	padding: 0 15px;
 	position: absolute;
 	bottom: 0;
 	left: 50%;
@@ -68,14 +68,15 @@ export const Pagination = styled(PaginationContainer)`
 
 	button {
 		margin: 0 5px;
+		flex-shrink: 0;
 	}
 
 	.current-page {
+		flex-grow: 1;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 100%;
-		height: 32px;
+		height: 35px;
 		margin: 0 5px;
 		font-size: 18px;
 		font-weight: 500;
@@ -83,5 +84,6 @@ export const Pagination = styled(PaginationContainer)`
 		text-align: center;
 		border: 1px solid #000;
 		border-radius: 10px;
+		min-width: 70px;
 	}
 `;

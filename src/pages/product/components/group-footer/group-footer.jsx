@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addCommentAsync } from '../../../../redux/actions';
-import { AuthFormError, Comment, Icon } from '../../../../components';
+import { AlertError, Comment, Icon } from '../../../../components';
 import styled from 'styled-components';
 
 const GroupFooterContainer = ({
@@ -77,7 +77,7 @@ const GroupFooterContainer = ({
 							}
 						/>
 					</div>
-					{error && <AuthFormError>{error}</AuthFormError>}
+					{error && <AlertError>{error}</AlertError>}
 					<div className="comments">
 						{comments ? (
 							comments.map(({ id, author, content, createdAt }) => (

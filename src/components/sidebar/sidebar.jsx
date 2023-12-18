@@ -5,6 +5,7 @@ import { fetchCategories } from '../../redux/actions';
 import { selectCategories } from '../../redux/selectors';
 import { generateLoader } from '../../utils';
 import { SidebarLoader } from '../loaders';
+import { AlertError } from '../../components';
 import styled from 'styled-components';
 
 const SidebarContainer = ({ className }) => {
@@ -27,7 +28,7 @@ const SidebarContainer = ({ className }) => {
 				{isLoading ? (
 					generateLoader(10, <SidebarLoader />)
 				) : error ? (
-					<div>{error}</div>
+					<AlertError>{error}</AlertError>
 				) : (
 					categories &&
 					categories.map(({ id, title }) => (

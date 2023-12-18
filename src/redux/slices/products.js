@@ -7,7 +7,7 @@ const initialState = {
 	isLoading: true,
 	error: null,
 	removeIsLoading: false,
-	removeError: null,
+	deletionError: null,
 };
 
 const productsSlice = createSlice({
@@ -30,18 +30,18 @@ const productsSlice = createSlice({
 			})
 			.addCase(removeProductAsync.pending, (state) => {
 				state.removeIsLoading = true;
-				state.removeError = null;
+				state.deletionError = null;
 			})
 			.addCase(removeProductAsync.fulfilled, (state, action) => {
 				state.products = state.products.filter(
 					(product) => product.id !== action.payload.id,
 				);
 				state.removeIsLoading = false;
-				state.removeError = null;
+				state.deletionError = null;
 			})
 			.addCase(removeProductAsync.rejected, (state, action) => {
 				state.removeIsLoading = false;
-				state.removeError = action.payload.error;
+				state.deletionError = action.payload.error;
 			});
 	},
 });

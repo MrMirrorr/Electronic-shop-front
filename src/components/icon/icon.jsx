@@ -9,9 +9,11 @@ const IconContainer = ({
 	size,
 	color,
 	clickable,
+	disabled,
+	onClick,
 	...props
 }) => (
-	<div className={className} {...props}>
+	<div className={className} onClick={disabled ? () => {} : onClick} {...props}>
 		<i className={`fa ${id}`} aria-hidden="true"></i>
 	</div>
 );

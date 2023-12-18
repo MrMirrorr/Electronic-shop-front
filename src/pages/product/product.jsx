@@ -5,7 +5,7 @@ import { fetchProduct } from '../../redux/actions';
 import { selectProduct } from '../../redux/selectors';
 import { generateLoader } from '../../utils';
 import { ProductLoader } from '../../components/loaders';
-import { Container } from '../../components';
+import { AlertError, Container } from '../../components';
 import { GroupFooter, GroupHeader, GroupLeft, GroupRight } from './components';
 import styled from 'styled-components';
 
@@ -32,7 +32,7 @@ const ProductContainer = ({ className }) => {
 				{isLoadingProduct ? (
 					generateLoader(1, <ProductLoader />)
 				) : errorProduct ? (
-					<div>{errorProduct}</div>
+					<AlertError>{errorProduct}</AlertError>
 				) : product ? (
 					<div className="product-block">
 						<GroupHeader title={product.title} id={product.id} />

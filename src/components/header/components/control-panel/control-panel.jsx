@@ -30,6 +30,11 @@ const ControlPanelContainer = ({ className }) => {
 		navigate('/products-list-admin');
 	};
 
+	const onClickUsers = () => {
+		setIsVisiblePopup(false);
+		navigate('/users-list-admin');
+	};
+
 	return isAuth ? (
 		<div className={className}>
 			<Link to="favorites" className="favorites-link">
@@ -52,7 +57,9 @@ const ControlPanelContainer = ({ className }) => {
 								<li className="popup-list-item" onClick={onClickProducts}>
 									Товары
 								</li>
-								<li className="popup-list-item">Пользователи</li>
+								<li className="popup-list-item" onClick={onClickUsers}>
+									Пользователи
+								</li>
 							</>
 						)}
 						<li className="popup-list-item">Профиль</li>

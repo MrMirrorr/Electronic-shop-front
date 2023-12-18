@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { fetchLogin } from '../../redux/actions';
 import { resetServerError } from '../../redux/slices/auth';
 import { selectAuth, selectIsAuth } from '../../redux/selectors';
-import { AuthFormError, Button, Container, Icon, Input } from '../../components';
+import { AlertError, Button, Container, Icon, Input } from '../../components';
 import styled from 'styled-components';
 
 const AuthorizationContainer = ({ className }) => {
@@ -77,7 +77,7 @@ const AuthorizationContainer = ({ className }) => {
 							'Авторизоваться'
 						)}
 					</Button>
-					{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
+					{errorMessage && <AlertError>{errorMessage}</AlertError>}
 				</form>
 				<Link to="/registration">Зарегистрироваться</Link>
 			</Container>

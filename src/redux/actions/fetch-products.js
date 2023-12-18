@@ -22,6 +22,11 @@ export const fetchProducts = createAsyncThunk(
 			return { products, lastPage, error };
 		} catch (err) {
 			console.log('error fetchProducts', err);
+			if (err.response.data.error) {
+				return rejectWithValue({
+					error: err.response.data.error,
+				});
+			}
 			if (err.code === 'ERR_BAD_RESPONSE') {
 				return rejectWithValue({
 					error: 'Товары не были получены с сервера, попробуйте еще раз позднее',

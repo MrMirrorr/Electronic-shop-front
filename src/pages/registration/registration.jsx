@@ -7,7 +7,7 @@ import { registerFormScheme } from '../../yup-schemes';
 import { resetServerError } from '../../redux/slices/auth';
 import { fetchRegister } from '../../redux/actions';
 import { selectAuth, selectIsAuth } from '../../redux/selectors';
-import { AuthFormError, Button, Container, Icon, Input } from '../../components';
+import { AlertError, Button, Container, Icon, Input } from '../../components';
 import styled from 'styled-components';
 
 const RegistrationContainer = ({ className }) => {
@@ -97,7 +97,7 @@ const RegistrationContainer = ({ className }) => {
 							'Зарегистрироваться'
 						)}
 					</Button>
-					{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
+					{errorMessage && <AlertError>{errorMessage}</AlertError>}
 				</form>
 			</Container>
 		</div>
