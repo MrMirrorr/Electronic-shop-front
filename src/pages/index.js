@@ -1,5 +1,6 @@
 export * from './add-product/add-product';
 export * from './authorization/authorization';
+export * from './cart/cart';
 export * from './main/main';
 export * from './product/product';
 export * from './products-list-admin/products-list-admin';

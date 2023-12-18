@@ -5,7 +5,7 @@ const initialState = {
 	product: null,
 	comments: [],
 	isLoadingProduct: true,
-	isLoadingComments: true,
+	isLoadingComments: false,
 	errorProduct: null,
 	errorComment: null,
 };

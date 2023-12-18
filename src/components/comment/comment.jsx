@@ -13,6 +13,7 @@ const CommentContainer = ({
 	author,
 	content,
 	createdAt,
+	isLoading,
 }) => {
 	const dispatch = useDispatch();
 	const isAdmin = useSelector(selectIsAdmin);
@@ -51,7 +52,8 @@ const CommentContainer = ({
 					size="18px"
 					color="#ff2c2c"
 					maxHeight="18px"
-					clickable={true}
+					clickable={!isLoading}
+					disabled={isLoading}
 					onClick={() => onCommentRemove(productId, commentId)}
 				/>
 			)}

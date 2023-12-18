@@ -20,6 +20,11 @@ export const addCommentAsync = createAsyncThunk(
 			return { comment: data, error };
 		} catch (err) {
 			console.log('error fetchProduct', err);
+			if (err.response.data.msg) {
+				return rejectWithValue({
+					error: err.response.data.msg,
+				});
+			}
 			if (err.response.data.error) {
 				return rejectWithValue({
 					error: err.response.data.error,

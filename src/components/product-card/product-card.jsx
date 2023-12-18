@@ -1,10 +1,22 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
 import styled from 'styled-components';
+import { addCartItemAsync } from '../../redux/actions';
 
 const ProductCardContainer = ({ className, product }) => {
+	const dispatch = useDispatch();
 	const { id, title, price, amount, imageUrl } = product;
+	const [isLoadingAddToCart, setIsLoadingAddToCart] = useState(false);
+
+	const onAddToCart = (id) => {
+		setIsLoadingAddToCart(true);
+		const quantity = 1;
+		const itemData = { productId: id, quantity };
+		dispatch(addCartItemAsync(itemData)).finally(() => setIsLoadingAddToCart(false));
+	};
 
 	return (
 		<div className={className}>
@@ -30,6 +42,8 @@ const ProductCardContainer = ({ className, product }) => {
 						fontWeight="600"
 						radius="20px"
 						uppercase={true}
+						onClick={() => onAddToCart(id)}
+						disabled={isLoadingAddToCart}
 					>
 						В корзину
 					</Button>

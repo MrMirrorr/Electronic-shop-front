@@ -21,7 +21,7 @@ const ProductContainer = ({ className }) => {
 		product,
 		comments,
 		isLoadingProduct,
-		isLoadingComment,
+		isLoadingComments,
 		errorProduct,
 		errorComment,
 	} = useSelector(selectProduct);
@@ -43,7 +43,7 @@ const ProductContainer = ({ className }) => {
 							comments={comments}
 							id={product.id}
 							error={errorComment}
-							isLoading={isLoadingComment}
+							isLoading={isLoadingComments}
 						/>
 					</div>
 				) : null}

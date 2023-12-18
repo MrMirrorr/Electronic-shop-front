@@ -1,10 +1,11 @@
 import { useLayoutEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { fetchAuthMe } from './redux/actions';
+import { fetchAuthMe, fetchCart } from './redux/actions';
 import {
 	AddProduct,
 	Authorization,
+	Cart,
 	Main,
 	Product,
 	ProductsListAdmin,
@@ -30,7 +31,7 @@ export const Shop = () => {
 
 	useLayoutEffect(() => {
 		// const intervalId = setInterval(() => dispatch(fetchAuthMe()), 60000);
-		dispatch(fetchAuthMe());
+		dispatch(fetchAuthMe()).then(() => dispatch(fetchCart()));
 		// return () => clearInterval(intervalId);
 	}, [dispatch]);
 
@@ -47,6 +48,7 @@ export const Shop = () => {
 					<Route path="/add-product" element={<AddProduct />} />
 					<Route path="/add-product/:id" element={<AddProduct />} />
 					<Route path="/users-list-admin" element={<UsersListAdmin />} />
+					<Route path="/cart" element={<Cart />} />
 				</Routes>
 			</Page>
 			<Footer />

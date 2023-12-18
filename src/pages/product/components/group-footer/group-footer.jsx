@@ -72,9 +72,8 @@ const GroupFooterContainer = ({
 							margin="0 0 0 10px"
 							size="22px"
 							clickable={!isLoading}
-							onClick={() =>
-								isLoading ? null : onNewCommentAdd(productId, newComment)
-							}
+							disabled={isLoading}
+							onClick={() => onNewCommentAdd(productId, newComment)}
 						/>
 					</div>
 					{error && <AlertError>{error}</AlertError>}
@@ -88,6 +87,7 @@ const GroupFooterContainer = ({
 									content={content}
 									createdAt={createdAt}
 									productId={productId}
+									isLoading={isLoading}
 								/>
 							))
 						) : (

@@ -14,14 +14,9 @@ export const fetchLogin = createAsyncThunk(
 			return { user: data, error };
 		} catch (err) {
 			console.log('error auth', err);
-			if (err.code === 'ERR_BAD_RESPONSE') {
+			if (err.response.data.msg) {
 				return rejectWithValue({
-					error: 'Нет связи с сервером, попробуйте еще раз позднее',
-				});
-			}
-			if (err.code === 'ECONNABORTED') {
-				return rejectWithValue({
-					error: 'Превышено время ожидания ответа',
+					error: err.response.data.msg,
 				});
 			}
 			if (err.response.data.error) {
@@ -29,9 +24,14 @@ export const fetchLogin = createAsyncThunk(
 					error: err.response.data.error,
 				});
 			}
-			if (err.response.data.msg) {
+			if (err.code === 'ECONNABORTED') {
 				return rejectWithValue({
-					error: err.response.data.msg,
+					error: 'Превышено время ожидания ответа',
+				});
+			}
+			if (err.code === 'ERR_BAD_RESPONSE') {
+				return rejectWithValue({
+					error: 'Нет связи с сервером, попробуйте еще раз позднее',
 				});
 			}
 			return rejectWithValue({
