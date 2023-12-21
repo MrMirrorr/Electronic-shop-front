@@ -91,16 +91,24 @@ export const ProductCard = styled(ProductCardContainer)`
 	}
 
 	.image {
-		max-height: 260px;
-		display: flex;
-		overflow: hidden;
+		height: 50%;
 
-		img {
-			object-fit: contain;
+		a {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			overflow: hidden;
+
+			img {
+				height: 100%;
+			}
 		}
 	}
 
 	.card-footer {
+		height: 50%;
 		flex-grow: 1;
 		display: flex;
 		flex-direction: column;

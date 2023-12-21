@@ -24,8 +24,7 @@ export const addProductFormScheme = yup.object().shape({
 		),
 	imageUrl: yup
 		.string('Ссылка на изображение должна быть текстом')
-		.required('Введите ссылку на изображение')
-		.url('Введите корректную ссылку на изображение'),
+		.required('Загрузите изображение'),
 	description: yup
 		.string('Описание должно быть тестом')
 		.required('Введите описание')

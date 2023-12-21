@@ -10,15 +10,18 @@ import { createProduct, updateProduct } from '../../api';
 import { checkServerErrorAndNavigate } from './utils/check-server-error-and-navigate';
 import { AlertError, Button, Container, Input } from '../../components';
 import styled from 'styled-components';
+import { useFileUploadInput } from '../../hooks';
 
 const AddProductContainer = ({ className }) => {
 	const params = useParams();
 	const { product } = useSelector(selectProduct);
+	const imageUrl = product?.imageUrl;
 
 	const {
 		register,
 		handleSubmit,
 		setValue,
+		trigger,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
@@ -49,6 +52,17 @@ const AddProductContainer = ({ className }) => {
 	const { categories } = useSelector(selectCategories);
 	const [serverError, setServerError] = useState(null);
 
+	const {
+		onChangeFile,
+		onClickRemoveImage,
+		onLoadFile,
+		setPreviewUrl,
+		setSelectedFile,
+		fileInputRef,
+		previewUrl,
+		selectedFile,
+	} = useFileUploadInput(imageUrl, setServerError, setValue, trigger, 'imageUrl');
+
 	const onSelectCategory = ({ target }) => {
 		setValue(target.value);
 	};
@@ -66,12 +80,16 @@ const AddProductContainer = ({ className }) => {
 		if (params.id) {
 			const res = await updateProduct(params.id, data);
 
+			setPreviewUrl(null);
+			setSelectedFile(null);
 			checkServerErrorAndNavigate(res, params.id, setServerError, navigate);
 			return;
 		}
 
 		const res = await createProduct(data);
 
+		setPreviewUrl(null);
+		setSelectedFile(null);
 		checkServerErrorAndNavigate(res, res?.newProduct?.id, setServerError, navigate);
 	};
 
@@ -90,12 +108,15 @@ const AddProductContainer = ({ className }) => {
 			<Container>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Input
+						label="Наименование"
+						id="title"
 						type="text"
-						placeholder="Наименование"
 						{...register('title', { onChange: () => setServerError(null) })}
 					/>
-					<select
-						type="select"
+					<Input
+						variant="select"
+						label="Категория"
+						id="category"
 						onChange={onSelectCategory}
 						{...register('categoryId', {
 							onChange: () => setServerError(null),
@@ -107,26 +128,52 @@ const AddProductContainer = ({ className }) => {
 								{title}
 							</option>
 						))}
-					</select>
+					</Input>
 					<Input
-						type="number"
-						placeholder="Стоимость"
+						variant="number"
+						label="Цена"
+						id="price"
 						{...register('price', { onChange: () => setServerError(null) })}
 					/>
 					<Input
-						type="number"
+						variant="number"
+						label="Количество"
+						id="amount"
 						placeholder="Количество"
 						{...register('amount', { onChange: () => setServerError(null) })}
 					/>
+					<Input type="file" onChange={onChangeFile} ref={fileInputRef} />
+					{selectedFile && (
+						<div className="control-buttons">
+							<Button
+								width="100%"
+								height="35px"
+								color="#ff0000"
+								fontWeight="600"
+								radius="20px"
+								onClick={onClickRemoveImage}
+							>
+								Удалить
+							</Button>
+							<Button
+								width="100%"
+								height="35px"
+								color="#529940"
+								fontWeight="600"
+								radius="20px"
+								onClick={onLoadFile}
+							>
+								Загрузить на сервер
+							</Button>
+						</div>
+					)}
+					{previewUrl && (
+						<img className="preview-img" src={previewUrl} alt="Preview" />
+					)}
 					<Input
-						type="text"
-						placeholder="Изображение (URL)"
-						{...register('imageUrl', {
-							onChange: () => setServerError(null),
-						})}
-					/>
-					<textarea
-						placeholder="Описание и характеристики"
+						variant="textarea"
+						label="Описание и характеристики"
+						id="description"
 						{...register('description', {
 							onChange: () => setServerError(null),
 						})}
@@ -157,6 +204,16 @@ export const AddProduct = styled(AddProductContainer)`
 		flex-direction: column;
 		gap: 20px;
 		max-width: 500px;
+	}
+
+	.control-buttons {
+		display: flex;
+		justify-content: space-between;
+		gap: 30px;
+	}
+
+	.preview-img {
+		max-width: 150px;
 	}
 
 	textarea,
