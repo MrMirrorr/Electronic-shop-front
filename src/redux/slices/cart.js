@@ -5,7 +5,6 @@ const initialState = {
 	cart: null,
 	items: [],
 	isLoadingCart: true,
-	isLoadingItems: false,
 	error: null,
 };
 
@@ -14,7 +13,10 @@ const cartSlice = createSlice({
 	initialState,
 	reducers: {
 		resetCart(state) {
-			state = initialState;
+			state.cart = null;
+			state.items = [];
+			state.isLoadingCart = false;
+			state.error = null;
 		},
 	},
 	extraReducers: (builder) => {
@@ -31,12 +33,11 @@ const cartSlice = createSlice({
 			})
 			.addCase(fetchCart.rejected, (state, action) => {
 				state.cart = null;
-				state.items = action.payload.items;
+				state.items = [];
 				state.isLoadingCart = false;
 				state.error = action.payload.error;
 			})
 			.addCase(addCartItemAsync.pending, (state) => {
-				state.isLoadingItems = true;
 				state.error = null;
 			})
 			.addCase(addCartItemAsync.fulfilled, (state, action) => {
@@ -45,31 +46,26 @@ const cartSlice = createSlice({
 				);
 
 				if (findItemIndex !== -1) {
-					state.items[findItemIndex].quantity += 1;
+					state.items[findItemIndex].quantity += action.payload.quantity;
 				} else {
 					state.items.push(action.payload.cartItem);
 				}
 
-				state.isLoadingItems = false;
 				state.error = null;
 			})
 			.addCase(addCartItemAsync.rejected, (state, action) => {
-				state.isLoadingItems = false;
 				state.error = action.payload.error;
 			})
 			.addCase(removeCartItemAsync.pending, (state) => {
-				state.isLoadingItems = true;
 				state.error = null;
 			})
 			.addCase(removeCartItemAsync.fulfilled, (state, action) => {
 				state.items = state.items.filter(
 					(item) => item.id !== action.payload.itemId,
 				);
-				state.isLoadingItems = false;
 				state.error = null;
 			})
 			.addCase(removeCartItemAsync.rejected, (state, action) => {
-				state.isLoadingItems = false;
 				state.error = action.payload.error;
 			});
 	},

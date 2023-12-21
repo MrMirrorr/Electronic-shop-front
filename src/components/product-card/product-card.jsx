@@ -1,15 +1,29 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { Button } from '../button/button';
-import { Icon } from '../icon/icon';
+import { useDispatch, useSelector } from 'react-redux';
+import { addCartItemAsync, addFavoriteAsync } from '../../redux/actions';
+import { selectCartItems, selectFavorites } from '../../redux/selectors';
+import { Button, Icon } from '../../components';
 import styled from 'styled-components';
-import { addCartItemAsync } from '../../redux/actions';
 
 const ProductCardContainer = ({ className, product }) => {
 	const dispatch = useDispatch();
 	const { id, title, price, amount, imageUrl } = product;
 	const [isLoadingAddToCart, setIsLoadingAddToCart] = useState(false);
+	const [isLoadingAddToFavorite, setIsLoadingAddToFavorite] = useState(false);
+	const { favorites } = useSelector(selectFavorites);
+	const cartItems = useSelector(selectCartItems);
+
+	const isInFavorite = Boolean(
+		favorites.find((favorite) => favorite.product.id === id),
+	);
+
+	const isInCart = Boolean(cartItems.find((cartItem) => cartItem.product.id === id));
+
+	const onAddToFavorite = (id) => {
+		setIsLoadingAddToFavorite(true);
+		dispatch(addFavoriteAsync(id)).finally(() => setIsLoadingAddToFavorite(false));
+	};
 
 	const onAddToCart = (id) => {
 		setIsLoadingAddToCart(true);
@@ -21,18 +35,26 @@ const ProductCardContainer = ({ className, product }) => {
 	return (
 		<div className={className}>
 			<div className="image">
-				<Link to={`product/${id}`}>
+				<Link to={`/product/${id}`}>
 					<img src={imageUrl} alt={title} />
 				</Link>
 			</div>
 			<div className="card-footer">
 				<div className="title">
-					<Link to={`product/${id}`}>{title}</Link>
+					<Link to={`/product/${id}`}>{title}</Link>
 				</div>
 				<div className="price">{price} р.</div>
 				<div className="amount">Осталось {amount} шт.</div>
 				<div className="buttons">
-					<Button width="35px" height="35px" color="#525864" radius="50%">
+					<Button
+						width="35px"
+						height="35px"
+						color="#525864"
+						radius="50%"
+						onClick={() => onAddToFavorite(id)}
+						disabled={isLoadingAddToFavorite}
+						active={isInFavorite}
+					>
 						<Icon id="fa-heart" maxHeight="14px" size="14px" />
 					</Button>
 					<Button
@@ -43,9 +65,10 @@ const ProductCardContainer = ({ className, product }) => {
 						radius="20px"
 						uppercase={true}
 						onClick={() => onAddToCart(id)}
-						disabled={isLoadingAddToCart}
+						disabled={isLoadingAddToCart || isInCart}
+						active={isInCart}
 					>
-						В корзину
+						{isInCart ? 'В корзине' : 'В корзину'}
 					</Button>
 				</div>
 			</div>

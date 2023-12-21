@@ -1,19 +1,18 @@
 import axios from 'axios';
 
-export const updateUserRole = async (id, data) => {
+export const getOrders = async () => {
 	try {
-		const res = await axios.patch(`/users/${id}/role`, data);
-
-		const {
-			data: { data: newUser },
-		} = res;
-
-		return newUser;
+		return axios.get('/orders');
 	} catch (err) {
-		console.log('error update product', err);
+		console.log('error get orders', err);
 		if (err.response.data.error) {
 			return {
 				error: err.response.data.error,
+			};
+		}
+		if (err.response.data.msg) {
+			return {
+				error: err.response.data.msg,
 			};
 		}
 		if (err.code === 'ERR_BAD_RESPONSE') {

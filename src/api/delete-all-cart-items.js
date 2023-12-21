@@ -1,16 +1,14 @@
 import axios from 'axios';
 
-export const updateUserRole = async (id, data) => {
+export const deleteAllCartItems = async (cartId) => {
 	try {
-		const res = await axios.patch(`/users/${id}/role`, data);
+		const { data } = await axios.delete(`/items/cart/${cartId}`, {
+			timeout: '3000',
+		});
 
-		const {
-			data: { data: newUser },
-		} = res;
-
-		return newUser;
+		return data;
 	} catch (err) {
-		console.log('error update product', err);
+		console.log('error deleteAllCartItems', err);
 		if (err.response.data.error) {
 			return {
 				error: err.response.data.error,
@@ -18,7 +16,7 @@ export const updateUserRole = async (id, data) => {
 		}
 		if (err.code === 'ERR_BAD_RESPONSE') {
 			return {
-				error: 'Нет связи с сервером, попробуйте еще раз позднее',
+				error: 'Товары не были удалены из корзины, попробуйте еще раз позднее',
 			};
 		}
 		if (err.code === 'ECONNABORTED') {

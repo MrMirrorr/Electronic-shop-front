@@ -1,9 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchAuthMe, fetchLogin, fetchLogout, fetchRegister } from '../actions';
+import {
+	fetchAuthMe,
+	fetchLogin,
+	fetchLogout,
+	fetchRegister,
+	updateUserAsync,
+} from '../actions';
 
 const initialState = {
 	user: null,
 	isLoading: false,
+	isAuthMeLoading: true,
 	error: null,
 };
 
@@ -47,17 +54,17 @@ const authSlice = createSlice({
 			})
 			.addCase(fetchAuthMe.pending, (state) => {
 				state.user = initialState.user;
-				state.isLoading = true;
+				state.isAuthMeLoading = true;
 				state.error = initialState.error;
 			})
 			.addCase(fetchAuthMe.fulfilled, (state, action) => {
 				state.user = action.payload.user;
-				state.isLoading = false;
+				state.isAuthMeLoading = false;
 				state.error = initialState.error;
 			})
 			.addCase(fetchAuthMe.rejected, (state) => {
 				state.user = initialState.user;
-				state.isLoading = false;
+				state.isAuthMeLoading = false;
 			})
 			.addCase(fetchRegister.pending, (state) => {
 				state.user = initialState.user;
@@ -71,6 +78,19 @@ const authSlice = createSlice({
 			})
 			.addCase(fetchRegister.rejected, (state, action) => {
 				state.user = initialState.user;
+				state.isLoading = false;
+				state.error = action.payload.error;
+			})
+			.addCase(updateUserAsync.pending, (state) => {
+				state.isLoading = true;
+				state.error = initialState.error;
+			})
+			.addCase(updateUserAsync.fulfilled, (state, action) => {
+				state.user = action.payload.user;
+				state.isLoading = false;
+				state.error = initialState.error;
+			})
+			.addCase(updateUserAsync.rejected, (state, action) => {
 				state.isLoading = false;
 				state.error = action.payload.error;
 			});

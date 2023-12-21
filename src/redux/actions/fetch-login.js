@@ -1,11 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { fetchCart } from './fetch-cart';
 
 export const fetchLogin = createAsyncThunk(
 	'auth/fetchLogin',
-	async (values, { rejectWithValue }) => {
+	async (values, { rejectWithValue, dispatch }) => {
 		try {
 			const res = await axios.post('/auth/login', values, { timeout: 3000 });
+			await dispatch(fetchCart());
 
 			const {
 				data: { data, error },

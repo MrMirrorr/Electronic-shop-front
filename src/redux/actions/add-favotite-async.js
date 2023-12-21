@@ -1,20 +1,22 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const addCartItemAsync = createAsyncThunk(
-	'cart/addCartItemAsync',
-	async (itemData, { rejectWithValue }) => {
+export const addFavoriteAsync = createAsyncThunk(
+	'favorite/addFavoriteAsync',
+	async (productId, { rejectWithValue }) => {
 		try {
-			const { quantity } = itemData;
 			const {
 				data: {
-					data: { cartItem },
+					operation,
+					data: { favorite },
 				},
-			} = await axios.post(`/items`, itemData, { timeout: '3000' });
+			} = await axios.post(`/favorites/product/${productId}`, {
+				timeout: '3000',
+			});
 
-			return { cartItem, quantity };
+			return { operation, favorite, productId };
 		} catch (err) {
-			console.log('error addCartItem', err);
+			console.log('error addFavorite', err);
 			if (err.response.data.error) {
 				return rejectWithValue({
 					error: err.response.data.error,
@@ -22,7 +24,7 @@ export const addCartItemAsync = createAsyncThunk(
 			}
 			if (err.code === 'ERR_BAD_RESPONSE') {
 				return rejectWithValue({
-					error: 'Товар не был добавлен в корзину, попробуйте еще раз позднее',
+					error: 'Товар не был добавлен в избранное, попробуйте еще раз позднее',
 				});
 			}
 			if (err.code === 'ECONNABORTED') {

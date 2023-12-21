@@ -37,7 +37,11 @@ const ProductContainer = ({ className }) => {
 					<div className="product-block">
 						<GroupHeader title={product.title} id={product.id} />
 						<GroupLeft imageUrl={product.imageUrl} title={product.title} />
-						<GroupRight price={product.price} amount={product.amount} />
+						<GroupRight
+							id={product.id}
+							price={product.price}
+							amount={product.amount}
+						/>
 						<GroupFooter
 							description={product.description}
 							comments={comments}

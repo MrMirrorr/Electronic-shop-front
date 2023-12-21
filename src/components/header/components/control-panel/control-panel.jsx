@@ -25,14 +25,9 @@ const ControlPanelContainer = ({ className }) => {
 		);
 	};
 
-	const onClickProducts = () => {
+	const onClickLink = (path) => {
 		setIsVisiblePopup(false);
-		navigate('/products-list-admin');
-	};
-
-	const onClickUsers = () => {
-		setIsVisiblePopup(false);
-		navigate('/users-list-admin');
+		navigate(path);
 	};
 
 	return isAuth ? (
@@ -54,15 +49,32 @@ const ControlPanelContainer = ({ className }) => {
 					<ul className="popup-list">
 						{isAdmin && (
 							<>
-								<li className="popup-list-item" onClick={onClickProducts}>
+								<li
+									className="popup-list-item"
+									onClick={() => onClickLink('/products-list-admin')}
+								>
 									Товары
 								</li>
-								<li className="popup-list-item" onClick={onClickUsers}>
+								<li
+									className="popup-list-item"
+									onClick={() => onClickLink('/users-list-admin')}
+								>
 									Пользователи
 								</li>
 							</>
 						)}
-						<li className="popup-list-item">Профиль</li>
+						<li
+							className="popup-list-item"
+							onClick={() => onClickLink('/orders')}
+						>
+							Заказы
+						</li>
+						<li
+							className="popup-list-item"
+							onClick={() => onClickLink('/profile')}
+						>
+							Профиль
+						</li>
 						<li className="popup-list-item" onClick={onClickLogout}>
 							Выход
 						</li>

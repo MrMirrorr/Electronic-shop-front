@@ -1,19 +1,23 @@
 import axios from 'axios';
 
-export const updateUserRole = async (id, data) => {
+export const createOrder = async (orderData, cartId) => {
 	try {
-		const res = await axios.patch(`/users/${id}/role`, data);
-
-		const {
-			data: { data: newUser },
-		} = res;
-
-		return newUser;
+		return await Promise.all([
+			axios.post('/orders', orderData),
+			axios.delete(`/items/cart/${cartId}`, {
+				timeout: '3000',
+			}),
+		]);
 	} catch (err) {
-		console.log('error update product', err);
+		console.log('error create order', err);
 		if (err.response.data.error) {
 			return {
 				error: err.response.data.error,
+			};
+		}
+		if (err.response.data.msg) {
+			return {
+				error: err.response.data.msg,
 			};
 		}
 		if (err.code === 'ERR_BAD_RESPONSE') {

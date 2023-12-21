@@ -1,7 +1,7 @@
 import ContentLoader from 'react-content-loader';
 import styled from 'styled-components';
 
-export const SidebarLoaderContainer = ({ className, ...props }) => (
+const SidebarLoaderContainer = ({ className, ...props }) => (
 	<li className={className}>
 		<ContentLoader
 			speed={1}

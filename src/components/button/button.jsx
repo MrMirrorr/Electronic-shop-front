@@ -7,6 +7,7 @@ const ButtonContainer = ({
 	variant,
 	route,
 	uppercase = false,
+	active = false,
 	...props
 }) => {
 	switch (variant) {
@@ -33,8 +34,9 @@ export const Button = styled(ButtonContainer)`
 	height: ${({ height = 'auto' }) => height};
 	font-size: ${({ fontSize = '16px' }) => fontSize};
 	font-weight: ${({ fontWeight = '400' }) => fontWeight};
-	color: ${({ color = 'inherit' }) => color};
-	background-color: ${({ bgColor = '#ccc' }) => bgColor};
+	color: ${({ color = 'inherit', bgColor = '#ccc', active }) =>
+		active ? bgColor : color};
+	background-color: ${({ bgColor = '#ccc', active }) => (active ? '#529940' : bgColor)};
 	border: ${({ border = 'none' }) => border};
 	border-radius: ${({ radius = '0' }) => radius};
 	${({ uppercase }) => uppercase && 'text-transform: uppercase'};
@@ -42,13 +44,13 @@ export const Button = styled(ButtonContainer)`
 	transition: all 0.2s ease-in-out;
 
 	&:hover {
-		color: ${({ bgColor = '#ccc' }) => bgColor};
-		background-color: ${({ color = 'inherit' }) => color};
+		color: ${({ bgColor = '#ccc', active }) => !active && bgColor};
+		background-color: ${({ color = 'inherit', active }) => !active && color};
 	}
 
 	&:disabled {
-		color: #6666668c;
-		background-color: #dfdfdf;
+		color: ${({ color, active }) => (active ? color : '#6666668c')};
+		background-color: ${({ bgColor, active }) => (active ? bgColor : '#dfdfdf')};
 		cursor: auto;
 	}
 `;
