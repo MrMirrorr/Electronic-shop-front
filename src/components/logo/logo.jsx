@@ -13,5 +13,6 @@ const LogoContainer = ({ className }) => {
 };
 
 export const Logo = styled(LogoContainer)`
-	max-width: 240px;
+	max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '240px')};
+	min-width: 150px;
 `;

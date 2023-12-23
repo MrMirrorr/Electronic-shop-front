@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { addCartItemAsync, removeCartItemAsync } from '../../../redux/actions';
 import { Icon } from '../../../components';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const ItemRowContainer = ({ className, item }) => {
 	const dispatch = useDispatch();
@@ -26,10 +27,16 @@ const ItemRowContainer = ({ className, item }) => {
 	return (
 		<tr className={className}>
 			<td>
-				<div className="title-block">
-					<img src={imageUrl} alt={title} />
-					{title}
-				</div>
+				<Link to={`/product/${productId}`}>
+					<div className="title-block">
+						{imageUrl ? (
+							<img src={imageUrl} alt={title} />
+						) : (
+							<Icon id="fa-picture-o" size="90px" color="#cccccc" />
+						)}
+						{title}
+					</div>
+				</Link>
 			</td>
 			<td>
 				<div className="price-block">{price} р.</div>

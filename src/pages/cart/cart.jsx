@@ -18,10 +18,7 @@ const CartContainer = ({ className }) => {
 	const { cart, items, isLoadingCart, error } = useSelector(selectCart);
 
 	useEffect(() => {
-		if (!cart) {
-			dispatch(fetchCart());
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		dispatch(fetchCart());
 	}, [dispatch]);
 
 	const totalSum = calculateTotalSum(items);

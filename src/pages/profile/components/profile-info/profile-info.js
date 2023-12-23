@@ -19,7 +19,11 @@ const ProfileInfoContainer = ({ className, setIsEditMode }) => {
 				clickable={true}
 				onClick={() => setIsEditMode(true)}
 			/>
-			<img src={avatarUrl} alt="User avatar" />
+			{avatarUrl ? (
+				<img src={avatarUrl} alt="User avatar" />
+			) : (
+				<Icon id="fa-user-circle-o" margin="0 10px 0 0" size="300px" />
+			)}
 			{isAdmin && <div className="role">Администратор</div>}
 			<div>
 				<span className="label">Почта:</span> {email}

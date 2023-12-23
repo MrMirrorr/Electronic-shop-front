@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { serverErrorCatcher } from '../utils/server-error-catcher';
 
 export const addCartItemAsync = createAsyncThunk(
 	'cart/addCartItemAsync',
@@ -14,25 +15,7 @@ export const addCartItemAsync = createAsyncThunk(
 
 			return { cartItem, quantity };
 		} catch (err) {
-			console.log('error addCartItem', err);
-			if (err.response.data.error) {
-				return rejectWithValue({
-					error: err.response.data.error,
-				});
-			}
-			if (err.code === 'ERR_BAD_RESPONSE') {
-				return rejectWithValue({
-					error: 'Товар не был добавлен в корзину, попробуйте еще раз позднее',
-				});
-			}
-			if (err.code === 'ECONNABORTED') {
-				return rejectWithValue({
-					error: 'Превышено время ожидания ответа',
-				});
-			}
-			return rejectWithValue({
-				error: 'Что-то пошло не так',
-			});
+			return serverErrorCatcher(err, 'error addCartItem', rejectWithValue);
 		}
 	},
 );

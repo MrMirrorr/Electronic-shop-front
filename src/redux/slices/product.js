@@ -15,11 +15,17 @@ const productSlice = createSlice({
 	initialState,
 	reducers: {
 		resetProduct(state) {
-			state = initialState;
+			state.product = null;
+			state.comments = [];
+			state.isLoadingProduct = true;
+			state.isLoadingComments = false;
+			state.errorProduct = null;
+			state.errorComment = null;
 		},
 	},
 	extraReducers: (builder) => {
 		builder
+			// fetch product
 			.addCase(fetchProduct.pending, (state) => {
 				state.isLoadingProduct = true;
 				state.errorProduct = null;
@@ -36,6 +42,8 @@ const productSlice = createSlice({
 				state.isLoadingProduct = false;
 				state.errorProduct = action.payload.error;
 			})
+
+			// add comment
 			.addCase(addCommentAsync.pending, (state) => {
 				state.isLoadingComments = true;
 				state.errorComment = null;
@@ -49,6 +57,8 @@ const productSlice = createSlice({
 				state.isLoadingComments = false;
 				state.errorComment = action.payload.error;
 			})
+
+			// remove comment
 			.addCase(removeCommentAsync.pending, (state) => {
 				state.isLoadingComments = true;
 				state.errorComment = null;

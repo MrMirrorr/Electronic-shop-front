@@ -64,7 +64,7 @@ const AddProductContainer = ({ className }) => {
 	} = useFileUploadInput(imageUrl, setServerError, setValue, trigger, 'imageUrl');
 
 	const onSelectCategory = ({ target }) => {
-		setValue(target.value);
+		setValue('categoryId', target.value);
 	};
 
 	useEffect(() => {
@@ -77,6 +77,7 @@ const AddProductContainer = ({ className }) => {
 	}, [dispatch]);
 
 	const onSubmit = async (data) => {
+		console.log(data);
 		if (params.id) {
 			const res = await updateProduct(params.id, data);
 

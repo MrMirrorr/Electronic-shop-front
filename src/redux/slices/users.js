@@ -13,23 +13,41 @@ const initialState = {
 const usersSlice = createSlice({
 	name: 'users',
 	initialState,
+	reducers: {
+		resetUsers(state) {
+			state.users = [];
+			state.roles = [];
+			state.isLoading = true;
+			state.error = null;
+			state.deletionIsLoading = false;
+			state.deletionError = null;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(fetchUsers.pending, () => initialState)
+			// fetch users
+			.addCase(fetchUsers.pending, (state) => {
+				state.users = [];
+				state.roles = [];
+				state.isLoading = true;
+				state.error = null;
+				state.deletionIsLoading = false;
+				state.deletionError = null;
+			})
 			.addCase(fetchUsers.fulfilled, (state, action) => {
-				state.error = initialState.error;
+				state.error = null;
 				state.users = action.payload.users;
 				state.roles = action.payload.roles;
-				state.lastPage = action.payload.lastPage;
 				state.isLoading = false;
 			})
 			.addCase(fetchUsers.rejected, (state, action) => {
-				state.users = initialState.users;
-				state.roles = initialState.roles;
-				state.lastPage = initialState.lastPage;
+				state.users = [];
+				state.roles = [];
 				state.isLoading = false;
 				state.error = action.payload.error;
 			})
+
+			// remove user
 			.addCase(removeUserAsync.pending, (state) => {
 				state.deletionIsLoading = true;
 				state.deletionError = null;
@@ -46,4 +64,5 @@ const usersSlice = createSlice({
 	},
 });
 
+export const { resetUsers } = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;

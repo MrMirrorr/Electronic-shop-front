@@ -55,85 +55,107 @@ const ProductsListAdminContainer = ({ className }) => {
 	return (
 		<div className={className}>
 			<Container>
-				<div className="top">
-					<Button
-						variant="link"
-						to="/add-product"
-						width="250px"
-						height="35px"
-						color="#525864"
-						fontWeight="600"
-						radius="20px"
-						uppercase={true}
-					>
-						Добавить товар
-					</Button>
-				</div>
-				{deletionError && <AlertError>{deletionError}</AlertError>}
-				<table>
-					<thead>
-						<tr>
-							<th> ID </th>
-							<th> Наименование </th>
-							<th> Категория </th>
-							<th> Стоимость </th>
-							<th> Кол-во </th>
-							<th> Фото </th>
-							<th> Действия </th>
-						</tr>
-					</thead>
-					{isLoading ? (
-						generateLoader(9, <ProductsListLoader />)
-					) : error ? (
-						<AlertError className="error">{error}</AlertError>
-					) : (
-						<tbody>
-							{products.map((product) => (
-								<tr key={product.id}>
-									<td>{product.id}</td>
-									<td>{product.title}</td>
-									<td>{product.categoryId.title}</td>
-									<td>{product.price}</td>
-									<td>{product.amount}</td>
-									<td>{product.imageUrl}</td>
-									<td className="controls">
-										<Link
-											to={
-												!deletionIsLoading
-													? `/add-product/${product.id}`
-													: '#'
-											}
-										>
+				<div className="products-block">
+					<div className="top">
+						<Button
+							variant="link"
+							to="/add-product"
+							width="250px"
+							height="35px"
+							color="#525864"
+							fontWeight="600"
+							radius="20px"
+							uppercase={true}
+						>
+							Добавить товар
+						</Button>
+					</div>
+					{deletionError && <AlertError>{deletionError}</AlertError>}
+					<table>
+						<thead>
+							<tr>
+								<th> ID </th>
+								<th> Наименование </th>
+								<th> Категория </th>
+								<th> Стоимость </th>
+								<th> Кол-во </th>
+								<th> Фото </th>
+								<th> Действия </th>
+							</tr>
+						</thead>
+						{isLoading ? (
+							generateLoader(9, <ProductsListLoader />)
+						) : error ? (
+							<AlertError className="error">{error}</AlertError>
+						) : (
+							<tbody>
+								{products.map((product) => (
+									<tr key={product.id}>
+										<td className="id">{product.id}</td>
+										<td>{product.title}</td>
+										<td>{product.categoryId.title}</td>
+										<td>{product.price}</td>
+										<td>{product.amount}</td>
+										<td className="photo">
+											{product.imageUrl ? (
+												<img
+													src={product.imageUrl}
+													alt={product.title}
+												/>
+											) : (
+												<Icon
+													id="fa-picture-o"
+													size="100px"
+													color="#cccccc"
+												/>
+											)}
+										</td>
+										<td className="controls">
+											<Link
+												to={
+													!deletionIsLoading
+														? `/add-product/${product.id}`
+														: '#'
+												}
+											>
+												<Icon
+													id="fa-pencil"
+													color="#529940"
+													clickable={!deletionIsLoading}
+													disabled={deletionIsLoading}
+												/>
+											</Link>
 											<Icon
-												id="fa-pencil"
-												color="#529940"
+												id="fa-trash"
+												margin="0 0 0 25px"
+												color="#ff0000"
 												clickable={!deletionIsLoading}
 												disabled={deletionIsLoading}
+												onClick={() =>
+													onProductRemove(product.id)
+												}
 											/>
-										</Link>
-										<Icon
-											id="fa-trash"
-											margin="0 0 0 25px"
-											color="#ff0000"
-											clickable={!deletionIsLoading}
-											disabled={deletionIsLoading}
-											onClick={() => onProductRemove(product.id)}
-										/>
-									</td>
-								</tr>
-							))}
-						</tbody>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						)}
+					</table>
+					{lastPage > 1 && (
+						<Pagination setPage={setPage} page={page} lastPage={lastPage} />
 					)}
-				</table>
-				{lastPage > 1 && (
-					<Pagination setPage={setPage} page={page} lastPage={lastPage} />
-				)}
+				</div>
 			</Container>
 		</div>
 	);
 };
 
 export const ProductsListAdmin = styled(ProductsListAdminContainer)`
+	.products-block {
+		position: relative;
+		padding-bottom: 70px;
+	}
+
 	.top {
 		padding: 10px 0;
 
@@ -147,10 +169,27 @@ export const ProductsListAdmin = styled(ProductsListAdminContainer)`
 	td {
 		border: 1px solid black;
 		border-collapse: collapse;
+		padding: 5px;
 	}
 
 	table {
 		width: 100%;
+	}
+
+	tbody tr {
+		&:nth-child(odd) {
+			background-color: #ffffff;
+		}
+	}
+
+	.id {
+		max-width: 50px;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+	.photo {
+		max-width: 150px;
 	}
 
 	.controls {

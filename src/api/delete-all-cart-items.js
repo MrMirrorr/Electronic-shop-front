@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { serverErrorHandler } from '../utils';
 
 export const deleteAllCartItems = async (cartId) => {
 	try {
@@ -8,24 +9,6 @@ export const deleteAllCartItems = async (cartId) => {
 
 		return data;
 	} catch (err) {
-		console.log('error deleteAllCartItems', err);
-		if (err.response.data.error) {
-			return {
-				error: err.response.data.error,
-			};
-		}
-		if (err.code === 'ERR_BAD_RESPONSE') {
-			return {
-				error: 'Товары не были удалены из корзины, попробуйте еще раз позднее',
-			};
-		}
-		if (err.code === 'ECONNABORTED') {
-			return {
-				error: 'Превышено время ожидания ответа',
-			};
-		}
-		return {
-			error: 'Что-то пошло не так',
-		};
+		serverErrorHandler(err, 'error deleteAllCartItems');
 	}
 };

@@ -62,7 +62,10 @@ const EditProfileFormContainer = ({ className, isEditMode, setIsEditMode }) => {
 	}, [reset, user, isEditMode, avatarUrl, setPreviewUrl]);
 
 	const onSubmit = (values) => {
-		dispatch(updateUserAsync(values)).then(() => {
+		dispatch(updateUserAsync(values)).then((res) => {
+			if (res.error) {
+				return;
+			}
 			setPreviewUrl(null);
 			setSelectedFile(null);
 			setIsEditMode(false);

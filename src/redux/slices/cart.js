@@ -21,6 +21,7 @@ const cartSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
+			// fetch cart
 			.addCase(fetchCart.pending, (state) => {
 				state.isLoadingCart = true;
 				state.error = null;
@@ -37,6 +38,8 @@ const cartSlice = createSlice({
 				state.isLoadingCart = false;
 				state.error = action.payload.error;
 			})
+
+			// add cart item
 			.addCase(addCartItemAsync.pending, (state) => {
 				state.error = null;
 			})
@@ -56,6 +59,8 @@ const cartSlice = createSlice({
 			.addCase(addCartItemAsync.rejected, (state, action) => {
 				state.error = action.payload.error;
 			})
+
+			// remove cart item
 			.addCase(removeCartItemAsync.pending, (state) => {
 				state.error = null;
 			})

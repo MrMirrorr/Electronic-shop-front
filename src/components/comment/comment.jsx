@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../redux/slices/ui';
 import { selectIsAdmin } from '../../redux/selectors';
-import { formatDateString } from '../../redux/utils';
+import { formatDateString } from '../../utils';
 import { Icon } from '../../components';
 import styled from 'styled-components';
 import { FUNCTION_ID } from '../../redux/constants/function-id';
@@ -10,6 +10,7 @@ const CommentContainer = ({
 	className,
 	id: commentId,
 	productId,
+	avatarUrl,
 	author,
 	content,
 	createdAt,
@@ -35,7 +36,11 @@ const CommentContainer = ({
 			<div className="comment">
 				<div className="info-panel">
 					<div className="author">
-						<Icon id="fa-user-circle-o" margin="0 10px 0 0" size="18px" />
+						{avatarUrl ? (
+							<img className="avatar" src={avatarUrl} alt={author} />
+						) : (
+							<Icon id="fa-user-circle-o" margin="0 10px 0 0" size="50px" />
+						)}
 						{author}
 					</div>
 					<div className="published-at">
@@ -65,6 +70,13 @@ export const Comment = styled(CommentContainer)`
 	display: flex;
 	margin-top: 10px;
 
+	.avatar {
+		width: 50px;
+		height: 50px;
+		object-fit: cover;
+		border-radius: 50%;
+	}
+
 	.comment {
 		width: 550px;
 		padding: 5px 10px;
@@ -74,11 +86,14 @@ export const Comment = styled(CommentContainer)`
 	.info-panel {
 		display: flex;
 		justify-content: space-between;
-		margin-bottom: 10px;
+		align-items: center;
+		margin-bottom: 20px;
 	}
 
 	.author {
 		display: flex;
+		align-items: center;
+		gap: 10px;
 	}
 
 	.published-at {

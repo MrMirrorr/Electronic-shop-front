@@ -3,6 +3,7 @@ export * from './authorization/authorization';
 export * from './cart/cart';
 export * from './favorites/favorites';
 export * from './main/main';
+export * from './not-found-404/not-found-404';
 export * from './orders/orders';
 export * from './product/product';
 export * from './products-list-admin/products-list-admin';

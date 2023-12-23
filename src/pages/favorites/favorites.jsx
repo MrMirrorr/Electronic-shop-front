@@ -1,5 +1,7 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { fetchFavorites } from '../../redux/actions';
 import { selectFavorites, selectIsAuth } from '../../redux/selectors';
 import { generateLoader } from '../../utils';
 import { AlertError, Container, ProductCard } from '../../components';
@@ -7,7 +9,12 @@ import { ProductsCardsLoader } from '../../components/loaders';
 import styled from 'styled-components';
 
 const FavoritesContainer = ({ className }) => {
+	const dispatch = useDispatch();
 	const { favorites, isLoading, error } = useSelector(selectFavorites);
+
+	useEffect(() => {
+		dispatch(fetchFavorites());
+	}, [dispatch]);
 
 	const isAuth = useSelector(selectIsAuth);
 	if (!isAuth) {

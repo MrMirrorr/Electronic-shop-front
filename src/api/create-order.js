@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { serverErrorHandler } from '../utils';
 
 export const createOrder = async (orderData, cartId) => {
 	try {
@@ -9,29 +10,6 @@ export const createOrder = async (orderData, cartId) => {
 			}),
 		]);
 	} catch (err) {
-		console.log('error create order', err);
-		if (err.response.data.error) {
-			return {
-				error: err.response.data.error,
-			};
-		}
-		if (err.response.data.msg) {
-			return {
-				error: err.response.data.msg,
-			};
-		}
-		if (err.code === 'ERR_BAD_RESPONSE') {
-			return {
-				error: 'Нет связи с сервером, попробуйте еще раз позднее',
-			};
-		}
-		if (err.code === 'ECONNABORTED') {
-			return {
-				error: 'Превышено время ожидания ответа',
-			};
-		}
-		return {
-			error: 'Что-то пошло не так',
-		};
+		serverErrorHandler(err, 'error create order');
 	}
 };

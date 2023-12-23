@@ -36,7 +36,11 @@ const ProductCardContainer = ({ className, product }) => {
 		<div className={className}>
 			<div className="image">
 				<Link to={`/product/${id}`}>
-					<img src={imageUrl} alt={title} />
+					{imageUrl ? (
+						<img src={imageUrl} alt={title} />
+					) : (
+						<Icon id="fa-picture-o" size="150px" color="#cccccc" />
+					)}
 				</Link>
 			</div>
 			<div className="card-footer">

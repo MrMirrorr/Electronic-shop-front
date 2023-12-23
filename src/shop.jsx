@@ -8,6 +8,7 @@ import {
 	Cart,
 	Favorites,
 	Main,
+	NotFound404,
 	Orders,
 	Product,
 	ProductsListAdmin,
@@ -28,6 +29,7 @@ const AppColumn = styled.div`
 
 const Page = styled.div`
 	flex-grow: 1;
+	padding-bottom: 15px;
 `;
 
 export const Shop = () => {
@@ -62,6 +64,7 @@ export const Shop = () => {
 						<Route path="/orders" element={<Orders />} />
 						<Route path="/favorites" element={<Favorites />} />
 						<Route path="/profile" element={<Profile />} />
+						<Route path="*" element={<NotFound404 />} />
 					</Routes>
 				) : (
 					<Icon

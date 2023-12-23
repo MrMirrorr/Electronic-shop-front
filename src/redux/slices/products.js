@@ -15,19 +15,29 @@ const productsSlice = createSlice({
 	initialState,
 	extraReducers: (builder) => {
 		builder
-			.addCase(fetchProducts.pending, () => initialState)
+			// fetch products
+			.addCase(fetchProducts.pending, (state) => {
+				state.products = [];
+				state.lastPage = 1;
+				state.isLoading = true;
+				state.error = null;
+				state.removeIsLoading = false;
+				state.deletionError = null;
+			})
 			.addCase(fetchProducts.fulfilled, (state, action) => {
-				state.error = initialState.error;
+				state.error = null;
 				state.products = action.payload.products;
 				state.lastPage = action.payload.lastPage;
 				state.isLoading = false;
 			})
 			.addCase(fetchProducts.rejected, (state, action) => {
-				state.products = initialState.products;
-				state.lastPage = initialState.lastPage;
+				state.products = [];
+				state.lastPage = 1;
 				state.isLoading = false;
 				state.error = action.payload.error;
 			})
+
+			// remove product
 			.addCase(removeProductAsync.pending, (state) => {
 				state.removeIsLoading = true;
 				state.deletionError = null;

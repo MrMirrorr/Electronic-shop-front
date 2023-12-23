@@ -54,10 +54,16 @@ const UserRowContainer = ({
 
 	return (
 		<tr className={className}>
-			<td>{userId}</td>
+			<td className="id">{userId}</td>
 			<td>{email}</td>
 			<td>{fullName}</td>
-			<td>{avatarUrl}</td>
+			<td>
+				{avatarUrl ? (
+					<img className="avatar" src={avatarUrl} alt={fullName} />
+				) : (
+					<Icon id="fa-user-circle-o" size="50px" />
+				)}
+			</td>
 			<td>
 				<select value={selectedRoleId} onChange={onRoleChange}>
 					{roles.map(({ id: roleId, name: roleName }) => (
@@ -91,7 +97,21 @@ const UserRowContainer = ({
 };
 
 export const UserRow = styled(UserRowContainer)`
+	.id {
+		max-width: 50px;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
 	.controls {
 		text-align: center;
+	}
+
+	.avatar {
+		width: 50px;
+		height: 50px;
+		object-fit: cover;
+		border-radius: 50%;
+		display: inline-block;
 	}
 `;

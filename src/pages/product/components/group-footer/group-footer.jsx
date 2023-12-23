@@ -79,17 +79,20 @@ const GroupFooterContainer = ({
 					{error && <AlertError>{error}</AlertError>}
 					<div className="comments">
 						{comments ? (
-							comments.map(({ id, author, content, createdAt }) => (
-								<Comment
-									key={id}
-									id={id}
-									author={author}
-									content={content}
-									createdAt={createdAt}
-									productId={productId}
-									isLoading={isLoading}
-								/>
-							))
+							comments.map(
+								({ id, avatarUrl, author, content, createdAt }) => (
+									<Comment
+										key={id}
+										id={id}
+										author={author}
+										avatarUrl={avatarUrl}
+										content={content}
+										createdAt={createdAt}
+										productId={productId}
+										isLoading={isLoading}
+									/>
+								),
+							)
 						) : (
 							<div className="empty-comments">
 								Вы можете стать первым, кто оставит здесь комментарий...

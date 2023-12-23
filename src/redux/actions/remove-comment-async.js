@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { serverErrorCatcher } from '../utils/server-error-catcher';
 
 export const removeCommentAsync = createAsyncThunk(
 	'product/removeCommentAsync',
@@ -15,25 +16,7 @@ export const removeCommentAsync = createAsyncThunk(
 
 			return { commentId, error };
 		} catch (err) {
-			console.log('error fetchProduct', err);
-			if (err.response.data.error) {
-				return rejectWithValue({
-					error: err.response.data.error,
-				});
-			}
-			if (err.code === 'ERR_BAD_RESPONSE') {
-				return rejectWithValue({
-					error: 'Комментарий не был удален, попробуйте еще раз позднее',
-				});
-			}
-			if (err.code === 'ECONNABORTED') {
-				return rejectWithValue({
-					error: 'Превышено время ожидания ответа',
-				});
-			}
-			return rejectWithValue({
-				error: 'Что-то пошло не так',
-			});
+			return serverErrorCatcher(err, 'error removeComment', rejectWithValue);
 		}
 	},
 );

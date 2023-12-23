@@ -10,4 +10,5 @@ export * from './select-product';
 export * from './select-products';
 export * from './select-search';
 export * from './select-sort-direction';
+export * from './select-user';
 export * from './select-users';

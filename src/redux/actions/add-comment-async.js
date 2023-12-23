@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { serverErrorCatcher } from '../utils/server-error-catcher';
 
 export const addCommentAsync = createAsyncThunk(
 	'product/addCommentAsync',
@@ -19,30 +20,7 @@ export const addCommentAsync = createAsyncThunk(
 
 			return { comment: data, error };
 		} catch (err) {
-			console.log('error fetchProduct', err);
-			if (err.response.data.msg) {
-				return rejectWithValue({
-					error: err.response.data.msg,
-				});
-			}
-			if (err.response.data.error) {
-				return rejectWithValue({
-					error: err.response.data.error,
-				});
-			}
-			if (err.code === 'ERR_BAD_RESPONSE') {
-				return rejectWithValue({
-					error: 'Комментарий не был отправлен, попробуйте еще раз позднее',
-				});
-			}
-			if (err.code === 'ECONNABORTED') {
-				return rejectWithValue({
-					error: 'Превышено время ожидания ответа',
-				});
-			}
-			return rejectWithValue({
-				error: 'Что-то пошло не так',
-			});
+			return serverErrorCatcher(err, 'error fetchProduct', rejectWithValue);
 		}
 	},
 );

@@ -10,9 +10,16 @@ const initialState = {
 const favoritesSlice = createSlice({
 	name: 'favorites',
 	initialState,
-	reducers: {},
+	reducers: {
+		resetFavorites(state) {
+			state.favorites = [];
+			state.isLoading = true;
+			state.error = null;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
+			// fetch favorites
 			.addCase(fetchFavorites.pending, (state) => {
 				state.items = [];
 				state.isLoading = true;
@@ -28,6 +35,8 @@ const favoritesSlice = createSlice({
 				state.isLoading = false;
 				state.error = action.payload.error;
 			})
+
+			// add favorite item
 			.addCase(addFavoriteAsync.pending, (state) => {})
 			.addCase(addFavoriteAsync.fulfilled, (state, action) => {
 				if (action.payload.operation === 'CREATE') {
@@ -44,4 +53,5 @@ const favoritesSlice = createSlice({
 	},
 });
 
+export const { resetFavorites } = favoritesSlice.actions;
 export const favoritesReducer = favoritesSlice.reducer;

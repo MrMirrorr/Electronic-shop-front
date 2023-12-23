@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../../../redux/slices/ui';
-import { selectIsAuth, selectIsAdmin } from '../../../../redux/selectors';
+import { selectIsAuth, selectIsAdmin, selectUser } from '../../../../redux/selectors';
 import { FUNCTION_ID } from '../../../../redux/constants/function-id';
 import { usePopup } from '../../../../hooks';
 import { Icon, Button } from '../../../../components';
@@ -12,6 +12,7 @@ const ControlPanelContainer = ({ className }) => {
 	const { isVisiblePopup, popupTogglerRef, setIsVisiblePopup, toggleVisiblePopup } =
 		usePopup();
 	const dispatch = useDispatch();
+	const user = useSelector(selectUser);
 	const isAuth = useSelector(selectIsAuth);
 	const isAdmin = useSelector(selectIsAdmin);
 
@@ -39,12 +40,17 @@ const ControlPanelContainer = ({ className }) => {
 				<Icon id="fa-shopping-basket" size="32px" clickable={true} />
 			</Link>
 			<div className="user-block" ref={popupTogglerRef}>
-				<Icon
-					id="fa-user-circle-o"
-					size="32px"
-					clickable={true}
-					onClick={toggleVisiblePopup}
-				/>
+				<div className="toggler" onClick={toggleVisiblePopup}>
+					{user?.avatarUrl ? (
+						<img
+							className="avatar"
+							src={user?.avatarUrl}
+							alt={user?.fullName}
+						/>
+					) : (
+						<Icon id="fa-user-circle-o" size="50px" clickable={true} />
+					)}
+				</div>
 				{isVisiblePopup && (
 					<ul className="popup-list">
 						{isAdmin && (
@@ -112,12 +118,26 @@ export const ControlPanel = styled(ControlPanelContainer)`
 		margin-right: 50px;
 	}
 
+	.toggler {
+		width: 50px;
+		height: 50px;
+	}
+
+	.avatar {
+		width: 50px;
+		height: 50px;
+		object-fit: cover;
+		border-radius: 50%;
+		cursor: pointer;
+	}
+
 	.popup-list {
 		list-style-type: none;
+		min-width: 130px;
 		margin: 0;
 		padding: 0;
 		position: absolute;
-		top: 35px;
+		top: 50px;
 		right: 0;
 		z-index: 1;
 		background-color: #fff;

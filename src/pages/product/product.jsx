@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { resetProduct } from '../../redux/slices/product';
 import { fetchProduct } from '../../redux/actions';
 import { selectProduct } from '../../redux/selectors';
 import { generateLoader } from '../../utils';
@@ -15,6 +16,8 @@ const ProductContainer = ({ className }) => {
 
 	useEffect(() => {
 		dispatch(fetchProduct(productId));
+
+		return () => dispatch(resetProduct());
 	}, [dispatch, productId]);
 
 	const {

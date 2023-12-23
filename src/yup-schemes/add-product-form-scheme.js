@@ -22,9 +22,7 @@ export const addProductFormScheme = yup.object().shape({
 		.test('no-leading-zeros', 'количество не должна начинаться с нулей', (value) =>
 			/^[1-9]\d*$/.test(value),
 		),
-	imageUrl: yup
-		.string('Ссылка на изображение должна быть текстом')
-		.required('Загрузите изображение'),
+	imageUrl: yup.string('Ссылка на изображение должна быть текстом'),
 	description: yup
 		.string('Описание должно быть тестом')
 		.required('Введите описание')

@@ -1,5 +1,6 @@
 import { Container } from '../container/container';
-import { ControlPanel, Logo, Search } from './components';
+import { Logo } from '../../components';
+import { ControlPanel, Search } from './components';
 import styled from 'styled-components';
 
 const HeaderContainer = ({ className }) => {

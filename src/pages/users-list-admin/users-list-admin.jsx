@@ -71,9 +71,16 @@ export const UsersListAdmin = styled(UsersListAdminContainer)`
 		border: 1px solid black;
 		border-collapse: collapse;
 		text-align: center;
+		padding: 5px;
 	}
 
 	table {
 		width: 100%;
+	}
+
+	tbody tr {
+		&:nth-child(odd) {
+			background-color: #ffffff;
+		}
 	}
 `;
