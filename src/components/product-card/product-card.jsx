@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCartItemAsync, addFavoriteAsync } from '../../redux/actions';
-import { selectCartItems, selectFavorites } from '../../redux/selectors';
+import { selectCartItems, selectFavorites, selectIsAuth } from '../../redux/selectors';
 import { Button, Icon } from '../../components';
 import styled from 'styled-components';
 
 const ProductCardContainer = ({ className, product }) => {
+	const isAuth = useSelector(selectIsAuth);
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { id, title, price, amount, imageUrl } = product;
 	const [isLoadingAddToCart, setIsLoadingAddToCart] = useState(false);
@@ -55,7 +57,9 @@ const ProductCardContainer = ({ className, product }) => {
 						height="35px"
 						color="#525864"
 						radius="50%"
-						onClick={() => onAddToFavorite(id)}
+						onClick={() =>
+							isAuth ? onAddToFavorite(id) : navigate('/authorization')
+						}
 						disabled={isLoadingAddToFavorite}
 						active={isInFavorite}
 					>
@@ -68,7 +72,9 @@ const ProductCardContainer = ({ className, product }) => {
 						fontWeight="600"
 						radius="20px"
 						uppercase={true}
-						onClick={() => onAddToCart(id)}
+						onClick={() =>
+							isAuth ? onAddToCart(id) : navigate('/authorization')
+						}
 						disabled={isLoadingAddToCart || isInCart}
 						active={isInCart}
 					>

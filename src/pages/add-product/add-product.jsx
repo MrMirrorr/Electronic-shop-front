@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { addProductFormScheme } from '../../yup-schemes';
 import { fetchCategories, fetchProduct } from '../../redux/actions';
-import { selectCategories, selectProduct } from '../../redux/selectors';
+import { selectCategories, selectIsAdmin, selectProduct } from '../../redux/selectors';
 import { createProduct, updateProduct } from '../../api';
 import { checkServerErrorAndNavigate } from './utils/check-server-error-and-navigate';
 import { AlertError, Button, Container, Input } from '../../components';
@@ -103,6 +103,15 @@ const AddProductContainer = ({ className }) => {
 		errors?.description?.message;
 
 	const errorMessage = formError || serverError;
+
+	const isAdmin = useSelector(selectIsAdmin);
+	if (!isAdmin) {
+		return (
+			<Container>
+				<AlertError>Доступ запрещен</AlertError>
+			</Container>
+		);
+	}
 
 	return (
 		<div className={className}>

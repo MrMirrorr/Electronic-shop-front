@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { selectIsAuth } from '../../redux/selectors';
 import { getOrders } from '../../api';
 import { formatDateString } from '../../utils/format-date-string';
@@ -25,16 +25,7 @@ const OrdersContainer = ({ className }) => {
 
 	const isAuth = useSelector(selectIsAuth);
 	if (!isAuth) {
-		return (
-			<Container>
-				<AlertError>
-					Чтобы просмотреть заказы необходимо{' '}
-					<Link to="/authorization" className="link-to-auth">
-						авторизоваться
-					</Link>
-				</AlertError>
-			</Container>
-		);
+		return <Navigate to="/" />;
 	}
 
 	return (

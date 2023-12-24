@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { resetCart } from '../../redux/slices/cart';
 import { fetchCart } from '../../redux/actions';
 import { selectCart, selectIsAuth } from '../../redux/selectors';
@@ -34,18 +34,7 @@ const CartContainer = ({ className }) => {
 
 	const isAuth = useSelector(selectIsAuth);
 	if (!isAuth) {
-		return (
-			<div className={className}>
-				<Container>
-					<AlertError>
-						Чтобы пользоваться корзиной необходимо{' '}
-						<Link to="/authorization" className="link-to-auth">
-							авторизоваться
-						</Link>
-					</AlertError>
-				</Container>
-			</div>
-		);
+		return <Navigate to="/" />;
 	}
 
 	return (

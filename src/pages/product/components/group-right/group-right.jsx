@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCartItemAsync } from '../../../../redux/actions';
-import { selectCartItems } from '../../../../redux/selectors';
+import { selectCartItems, selectIsAuth } from '../../../../redux/selectors';
 import { Button } from '../../../../components';
 import styled from 'styled-components';
 
 const GroupRightContainer = ({ className, id, price, amount }) => {
+	const isAuth = useSelector(selectIsAuth);
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [isLoadingAddToCart, setIsLoadingAddToCart] = useState(false);
 	const cartItems = useSelector(selectCartItems);
@@ -32,7 +35,9 @@ const GroupRightContainer = ({ className, id, price, amount }) => {
 					color="#525864"
 					uppercase={true}
 					disabled={isLoadingAddToCart || isInCart}
-					onClick={() => onAddToCart(id)}
+					onClick={() =>
+						isAuth ? onAddToCart(id) : navigate('/authorization')
+					}
 					active={isInCart}
 				>
 					{isInCart ? 'В корзине' : 'В корзину'}

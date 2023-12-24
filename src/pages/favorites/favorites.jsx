@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { fetchFavorites } from '../../redux/actions';
 import { selectFavorites, selectIsAuth } from '../../redux/selectors';
 import { generateLoader } from '../../utils';
@@ -18,18 +18,7 @@ const FavoritesContainer = ({ className }) => {
 
 	const isAuth = useSelector(selectIsAuth);
 	if (!isAuth) {
-		return (
-			<div className={className}>
-				<Container>
-					<AlertError>
-						Чтобы пользоваться избранным необходимо{' '}
-						<Link to="/authorization" className="link-to-auth">
-							авторизоваться
-						</Link>
-					</AlertError>
-				</Container>
-			</div>
-		);
+		return <Navigate to="/" />;
 	}
 
 	return (

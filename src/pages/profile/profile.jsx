@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from '../../redux/selectors';
-import { AlertError, Container } from '../../components';
+import { Container } from '../../components';
 import { EditProfileForm, ProfileInfo } from './components';
 import styled from 'styled-components';
 
@@ -11,18 +11,7 @@ const ProfileContainer = ({ className }) => {
 
 	const isAuth = useSelector(selectIsAuth);
 	if (!isAuth) {
-		return (
-			<div className={className}>
-				<Container>
-					<AlertError>
-						Чтобы попасть на эту страницу необходимо{' '}
-						<Link to="/authorization" className="link-to-auth">
-							авторизоваться
-						</Link>
-					</AlertError>
-				</Container>
-			</div>
-		);
+		return <Navigate to="/" />;
 	}
 
 	return (
