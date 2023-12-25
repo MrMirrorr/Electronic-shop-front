@@ -48,7 +48,7 @@ const ItemRowContainer = ({ className, item }) => {
 						size="28px"
 						color="#529940"
 						clickable={true}
-						disabled={isLoading}
+						disabled={isLoading || quantity === 1}
 						onClick={() => onChangeQuantity(productId, -1)}
 					/>
 					{quantity}
